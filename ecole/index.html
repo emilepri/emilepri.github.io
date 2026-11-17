@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script>(function(){try{var t=localStorage.getItem('jang-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme='light';}})();</script>
+<script>(function(){try{var t=localStorage.getItem('jang-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;var l=localStorage.getItem('jang-lang');if(!l)l=(navigator.language||'fr').toLowerCase().indexOf('en')===0?'en':'fr';document.documentElement.lang=l;}catch(e){document.documentElement.dataset.theme='light';}})();</script>
 <style>
 :root{
   --side:#0B3B2E; --side2:#114A3A; --green:#127A4B; --green-l:#E5F3EC;
@@ -18,9 +18,9 @@
   --blue:#1D5FA8; --blue-l:#E6EFF9;
   --ink:#16201C; --muted:#5B6863; --line:#E2E8E5; --bg:#F4F6F5; --white:#fff;
   --purple:#7A3EA8; --purple-l:#F3E8FA;
-  --soft:var(--soft); --row:#EEF2F0; --hover:var(--hover); --tabs:#E8EDEA; --chip:#EEF1F0; --warn-ink:#8A5A00;
-  --hover-line:#B9C7C0; --focus:var(--focus); --tint-border:#CBE6D7; --on-primary:#fff; --primary-h:#0E6640;
-  --banner-ink:#6B4700; --banner-line:#F3DFAE; --side-ink:var(--side-ink); --side-muted:var(--side-muted); --side-line:var(--side-line);
+  --soft:#EDF1EF; --row:#EEF2F0; --hover:#F8FAF9; --tabs:#E8EDEA; --chip:#EEF1F0; --warn-ink:#8A5A00;
+  --hover-line:#B9C7C0; --focus:#9BD3B8; --tint-border:#CBE6D7; --on-primary:#fff; --primary-h:#0E6640;
+  --banner-ink:#6B4700; --banner-line:#F3DFAE; --side-ink:#D7E6DF; --side-muted:#9CC3B2; --side-line:#2E6352;
   --login-bg:radial-gradient(ellipse at 30% 40%,#FFF7E6 0%,#EFE7D8 55%,#E4DBCB 100%);
   --lamp-metal:#3A3F47; --lamp-shade:#2A2D33; --toast-line:transparent;
   --radius:12px; --font:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Arial,sans-serif;
@@ -48,7 +48,8 @@ a{color:var(--green)}
 
 /* sidebar */
 .side{background:var(--side);color:var(--side-ink);padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px}
-.brand{display:flex;align-items:center;gap:10px;padding:4px 8px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px;flex-wrap:wrap}
+.brand .mark{flex:none}
 .brand .mark{width:38px;height:38px;border-radius:10px;background:var(--amber);color:var(--side);display:grid;place-items:center;font-weight:800;font-size:20px}
 .brand b{display:block;color:#fff;font-size:18px;letter-spacing:.2px}
 .brand small{color:var(--side-muted);font-size:12px}
@@ -194,9 +195,12 @@ textarea.input{padding:10px 12px;min-height:110px;width:100%;resize:vertical}
 
 /* boutons thème / déconnexion */
 .brand-actions{margin-left:auto;display:flex;gap:6px}
+@media (min-width:861px){.side .brand-actions{width:100%;margin:4px 0 0;justify-content:flex-start}.side .brand-actions .icon-btn{flex:1}}
 .icon-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--side-line);background:var(--side2);color:var(--side-ink);cursor:pointer;display:grid;place-items:center;font-size:16px;padding:0}
 .icon-btn:hover{color:#fff;border-color:var(--amber)}
 .icon-btn svg{width:18px;height:18px}
+.lang-btn{font-size:12px;font-weight:800;letter-spacing:.5px}
+.roles em{font-style:normal}
 
 /* ===== Page de connexion ===== */
 #login{position:fixed;inset:0;z-index:40;background:var(--login-bg);overflow:auto;display:grid;grid-template-columns:1fr minmax(320px,440px);align-items:center;gap:24px;padding:40px clamp(20px,6vw,90px);transition:opacity .45s, visibility .45s}
@@ -280,25 +284,25 @@ textarea.input{padding:10px 12px;min-height:110px;width:100%;resize:vertical}
 <body>
 <div class="app">
   <aside class="side">
-    <div class="brand"><div class="mark">J</div><div><b>Jàng</b><small id="role-label">Gestion scolaire</small></div>
-      <div class="brand-actions"><button class="icon-btn theme-toggle" type="button" aria-label="Changer de mode"></button><button class="icon-btn" type="button" id="logout" aria-label="Se déconnecter" title="Se déconnecter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></button></div></div>
+    <div class="brand"><div class="mark">J</div><div><b>Jàng</b><small id="role-label" data-i="Gestion scolaire">Gestion scolaire</small></div>
+      <div class="brand-actions"><button class="icon-btn lang-btn" type="button"></button><button class="icon-btn theme-toggle" type="button"></button><button class="icon-btn" type="button" id="logout" data-i-aria="Se déconnecter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg></button></div></div>
     <div class="school"><b id="school-name"></b><span id="school-year"></span></div>
-    <nav class="nav" id="nav" aria-label="Navigation principale"></nav>
-    <div class="foot">Prototype de démonstration.<br>Données fictives, enregistrées dans ce navigateur.<br><button id="reset">Réinitialiser la démo</button></div>
+    <nav class="nav" id="nav" data-i-aria="Navigation principale"></nav>
+    <div class="foot"><span data-i="Prototype de démonstration.">Prototype de démonstration.</span><br><span data-i="Données fictives, enregistrées dans ce navigateur.">Données fictives, enregistrées dans ce navigateur.</span><br><button id="reset" data-i="Réinitialiser la démo">Réinitialiser la démo</button></div>
   </aside>
   <main>
-    <div class="demo-banner">Démo : les noms, numéros et paiements sont fictifs. Aucun SMS ni paiement réel n'est envoyé.</div>
+    <div class="demo-banner" data-i="Démo : les noms, numéros et paiements sont fictifs. Aucun SMS ni paiement réel n'est envoyé.">Démo : les noms, numéros et paiements sont fictifs. Aucun SMS ni paiement réel n'est envoyé.</div>
     <div class="top"><div><h1 id="page-title"></h1><p id="page-sub"></p></div><div class="actions" id="page-actions"></div></div>
     <div id="view"></div>
   </main>
 </div>
 
-<section id="login" aria-label="Connexion">
+<section id="login" data-i-aria="Connexion">
   <div class="glow"></div>
   <div class="login-brand"><div class="mark">J</div><b>Jàng</b></div>
-  <div class="login-top"><button class="icon-btn theme-toggle" type="button" aria-label="Changer de mode"></button></div>
+  <div class="login-top"><button class="icon-btn lang-btn" type="button"></button><button class="icon-btn theme-toggle" type="button"></button></div>
   <div class="lamp-zone">
-    <button class="lamp-btn" id="lamp" type="button" aria-label="Allumer la lampe" aria-pressed="false">
+    <button class="lamp-btn" id="lamp" type="button" aria-pressed="false">
       <svg class="lamp" viewBox="0 0 260 380" aria-hidden="true">
         <defs>
           <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD98A" stop-opacity=".75"/><stop offset=".55" stop-color="#F5B841" stop-opacity=".22"/><stop offset="1" stop-color="#F5B841" stop-opacity="0"/></linearGradient>
@@ -320,35 +324,190 @@ textarea.input{padding:10px 12px;min-height:110px;width:100%;resize:vertical}
         <g class="cord"><line x1="172" y1="98" x2="172" y2="176" stroke="#C9A24E" stroke-width="2"/><circle cx="172" cy="182" r="7" fill="#F5B841"/></g>
       </svg>
     </button>
-    <p class="lamp-hint">Tirez sur la chaînette pour allumer 💡</p>
+    <p class="lamp-hint" data-i="Tirez sur la chaînette pour allumer 💡">Tirez sur la chaînette pour allumer 💡</p>
   </div>
   <form class="login-card" id="f-login" novalidate>
-    <h2>Bienvenue 👋🏾</h2>
-    <p class="sub">Connectez-vous pour accéder à votre école</p>
-    <div class="roles" role="radiogroup" aria-label="Profil">
-      <button type="button" data-role="direction" class="active" role="radio" aria-checked="true"><span>🏫</span>Direction</button>
-      <button type="button" data-role="secretariat" role="radio" aria-checked="false"><span>🗂️</span>Secrétariat</button>
-      <button type="button" data-role="enseignant" role="radio" aria-checked="false"><span>📚</span>Enseignant</button>
-      <button type="button" data-role="parent" role="radio" aria-checked="false"><span>👨🏾‍👧🏾</span>Parent</button>
+    <h2 data-i="Bienvenue 👋🏾">Bienvenue 👋🏾</h2>
+    <p class="sub" data-i="Connectez-vous pour accéder à votre école">Connectez-vous pour accéder à votre école</p>
+    <div class="roles" role="radiogroup" data-i-aria="Profil">
+      <button type="button" data-role="direction" class="active" role="radio" aria-checked="true"><span>🏫</span><em data-i="Direction">Direction</em></button>
+      <button type="button" data-role="secretariat" role="radio" aria-checked="false"><span>🗂️</span><em data-i="Secrétariat">Secrétariat</em></button>
+      <button type="button" data-role="enseignant" role="radio" aria-checked="false"><span>📚</span><em data-i="Enseignant">Enseignant</em></button>
+      <button type="button" data-role="parent" role="radio" aria-checked="false"><span>👨🏾‍👧🏾</span><em data-i="Parent">Parent</em></button>
     </div>
     <label class="field"><span id="id-label">E-mail ou identifiant</span>
       <div class="ctrl"><span class="lead" aria-hidden="true">👤</span><input id="l-id" autocomplete="username" value="direction@lesbaobabs.sn"></div></label>
-    <label class="field"><span class="row"><span>Mot de passe</span><a href="#" id="forgot">Mot de passe oublié ?</a></span>
-      <div class="ctrl"><span class="lead" aria-hidden="true">🔒</span><input id="l-pw" type="password" autocomplete="current-password" placeholder="Votre mot de passe" value="demo2026"><button class="eye" type="button" id="eye" aria-label="Afficher le mot de passe">👁️</button></div></label>
-    <label class="remember"><input type="checkbox" checked> Se souvenir de moi</label>
-    <button class="btn-login" type="submit">Se connecter <span aria-hidden="true">→</span></button>
-    <div class="divider">ou continuer avec</div>
+    <label class="field"><span class="row"><span data-i="Mot de passe">Mot de passe</span><a href="#" id="forgot" data-i="Mot de passe oublié ?">Mot de passe oublié ?</a></span>
+      <div class="ctrl"><span class="lead" aria-hidden="true">🔒</span><input id="l-pw" type="password" autocomplete="current-password" data-i-ph="Votre mot de passe" value="demo2026"><button class="eye" type="button" id="eye">👁️</button></div></label>
+    <label class="remember"><input type="checkbox" checked> <span data-i="Se souvenir de moi">Se souvenir de moi</span></label>
+    <button class="btn-login" type="submit"><span data-i="Se connecter">Se connecter</span> <span aria-hidden="true">→</span></button>
+    <div class="divider" data-i="ou continuer avec">ou continuer avec</div>
     <div class="alt-login">
       <button type="button" data-alt="Google"><svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Google</button>
-      <button type="button" data-alt="SMS">📱 Code par SMS</button>
+      <button type="button" data-alt="SMS">📱 <span data-i="Code par SMS">Code par SMS</span></button>
     </div>
-    <p class="login-note">Démo : n'importe quel identifiant fonctionne.</p>
+    <p class="login-note" data-i="Démo : n'importe quel identifiant fonctionne.">Démo : n'importe quel identifiant fonctionne.</p>
   </form>
 </section>
-<div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div class="modal-box" id="modal-box"><button class="close" id="modal-close" aria-label="Fermer">×</button><div id="modal-body"></div></div></div>
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div class="modal-box" id="modal-box"><button class="close" id="modal-close" data-i-aria="Fermer">×</button><div id="modal-body"></div></div></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
+/* ============ Langue (français / anglais) ============ */
+let LANG = (() => { try{ const l = localStorage.getItem('jang-lang'); if(l) return l; }catch(e){} return (navigator.language || 'fr').toLowerCase().startsWith('en') ? 'en' : 'fr'; })();
+const plural = (n, one, many) => n == 1 ? one : many;
+/* Dictionnaire anglais : la clé est le texte français. Une valeur peut être une fonction (pluriels). */
+const EN = {
+  // Interface générale
+  "Gestion scolaire":"School management", "Prototype de démonstration.":"Demo prototype.",
+  "Données fictives, enregistrées dans ce navigateur.":"Sample data, saved in this browser.", "Réinitialiser la démo":"Reset the demo",
+  "Démo : les noms, numéros et paiements sont fictifs. Aucun SMS ni paiement réel n'est envoyé.":"Demo: names, phone numbers and payments are fictitious. No real SMS or payment is sent.",
+  "Navigation principale":"Main navigation", "Fermer":"Close", "Se déconnecter":"Log out", "Connexion":"Sign in",
+  "Passer en mode clair":"Switch to light mode", "Passer en mode sombre":"Switch to dark mode",
+  "Jàng – Gestion d'école privée (démo)":"Jàng – Private school management (demo)",
+  "Année scolaire {a}":"School year {a}", "Toutes les classes":"All classes", "Annuler":"Cancel", "Terminé":"Done",
+  "Imprimer":"Print", "Imprimer / PDF":"Print / PDF", "Tout voir":"See all", "Historique":"History", "—":"—",
+  // Navigation
+  "Tableau de bord":"Dashboard", "Élèves":"Students", "Scolarités":"School fees", "Notes & bulletins":"Grades & reports",
+  "Appel & absences":"Attendance", "Communication":"Messages", "Espace parent":"Parent app",
+  // Données
+  "Octobre":"October","Novembre":"November","Décembre":"December","Janvier":"January","Février":"February","Mars":"March","Avril":"April","Mai":"May","Juin":"June",
+  "Primaire":"Primary", "Collège":"Middle school", "Espèces":"Cash", "Inscription":"Registration", "Mensualité":"Monthly fee",
+  "Absence":"Absent", "Retard":"Late",
+  "Français":"French", "Mathématiques":"Mathematics", "Sciences d'observation":"Science", "Histoire-Géographie":"History & Geography",
+  "Éducation civique":"Civics", "Anglais":"English", "EPS":"Physical education", "SVT":"Life & Earth sciences",
+  "Insuffisant":"Unsatisfactory", "Faible":"Weak", "Passable":"Fair", "Assez bien":"Fairly good", "Bien":"Good", "Très bien":"Very good",
+  "Félicitations":"Highest honours", "Encouragements":"Commendation", "Tableau d'honneur":"Honour roll", "Avertissement":"Warning",
+  "Relance":"Reminder", "Automatique":"Automatic",
+  // Statuts
+  "En avance":"Paid ahead", "À jour":"Up to date", "{n} mois de retard": v => plural(v.n, '1 month overdue', `${v.n} months overdue`),
+  // Tableau de bord
+  "+ Encaisser un paiement":"+ Record a payment", "Élèves inscrits":"Enrolled students", "{f} filles · {g} garçons · {c} classes":"{f} girls · {g} boys · {c} classes",
+  "Encaissé ce mois-ci":"Collected this month", "{m} depuis la rentrée":"{m} since the start of the year", "Impayés à recouvrer":"Outstanding fees",
+  "{n} élèves en retard": v => plural(v.n, '1 student behind on payments', `${v.n} students behind on payments`),
+  "Taux de recouvrement":"Collection rate", "Mensualités d'octobre et novembre":"October and November fees",
+  "Élèves en retard de paiement":"Students behind on payments", "Élève":"Student", "Classe":"Class", "Montant dû":"Amount due", "Relancer":"Remind",
+  "Relancer les {n} parents par WhatsApp":"Remind the {n} parents on WhatsApp", "Recouvrement par classe":"Collection rate by class",
+  "{c} : {p}% recouvré":"{c}: {p}% collected", "Derniers paiements":"Latest payments", "Absences aujourd'hui":"Absences today",
+  "Faire l'appel":"Take attendance", "Aucune absence enregistrée aujourd'hui.":"No absences recorded today.",
+  // Élèves
+  "{n} élèves inscrits pour l'année {a}":"{n} students enrolled for {a}", "+ Inscrire un élève":"+ Enrol a student",
+  "Rechercher un élève, un parent, un numéro…":"Search for a student, parent or phone number…", "Rechercher":"Search",
+  "Parent / tuteur":"Parent / guardian", "Téléphone":"Phone", "Scolarité":"Fees", "Moyenne":"Average",
+  "Matricule {n}":"ID {n}", "Aucun élève ne correspond à cette recherche.":"No student matches this search.",
+  "{n} mois payés sur {t}":"{n} of {t} months paid", "Moyenne 1er trim.":"Term 1 average", "{r} sur {n}":"{r} of {n}",
+  "Absences / retards":"Absences / late arrivals", "Informations":"Details", "Date de naissance":"Date of birth",
+  "Paiements":"Payments", "Date":"Date", "Motif":"Purpose", "Mode":"Method", "Montant":"Amount", "Aucun paiement":"No payments",
+  "Relancer le parent":"Remind the parent", "Voir le bulletin":"View report card", "Encaisser un paiement":"Record a payment",
+  "Inscrire un élève":"Enrol a student", "Année scolaire {a}":"School year {a}", "Prénom":"First name", "Nom":"Last name", "Sexe":"Sex",
+  "Fille":"Girl", "Garçon":"Boy", "Mode de paiement de l'inscription":"Registration payment method",
+  "Ex. Mme Fatou Diop":"e.g. Mrs Fatou Diop", "Téléphone (WhatsApp)":"Phone (WhatsApp)", "Frais d'inscription":"Registration fee",
+  "{m} / mois":"{m} / month", "Valider l'inscription":"Confirm enrolment", "{n} est inscrit(e) en {c}.":"{n} is now enrolled in {c}.",
+  // Scolarités
+  "Encaissements, reçus et relances des impayés":"Payments, receipts and reminders for unpaid fees",
+  "Impayés":"Unpaid", "Historique des paiements":"Payment history", "Grille des frais":"Fee schedule",
+  "{n} élèves · {m} à recouvrer":"{n} students · {m} outstanding", "Relancer tous par WhatsApp":"Remind all on WhatsApp",
+  "Parent":"Parent", "Mois impayés":"Unpaid months", "Encaisser":"Record", "Aucun impayé 🎉":"No unpaid fees 🎉",
+  "{p}% des encaissements":"{p}% of payments", "N° reçu":"Receipt no.", "Reçu":"Receipt",
+  "Les 80 derniers paiements sont affichés.":"The 80 most recent payments are shown.",
+  "Cycle":"Level", "Enseignant(e)":"Teacher", "Total annuel":"Annual total",
+  "Scolarité sur {n} mois (octobre à juin). Dans la version finale, chaque école configure ses frais : tenue, cantine, transport, fournitures…":"Fees are spread over {n} months (October to June). In the final version, each school sets up its own fees: uniform, canteen, transport, supplies…",
+  "Le reçu est généré automatiquement et peut être envoyé au parent.":"The receipt is generated automatically and can be sent to the parent.",
+  "Nombre de mois":"Number of months", "Mode de paiement":"Payment method", "{n} mois": v => plural(v.n, '1 month', `${v.n} months`),
+  "Année soldée":"Year fully paid", "Mensualités : {m}":"Monthly fees: {m}", "Toute l'année est déjà payée.":"The whole year is already paid.",
+  "Valider et générer le reçu":"Confirm and generate receipt", "Paiement de {m} enregistré pour {n}.":"Payment of {m} recorded for {n}.",
+  "Reçu N° {n}":"Receipt no. {n}", "Reçu de paiement":"Payment receipt", "Montant payé":"Amount paid", "Réf.":"Ref.", "Tél.":"Tel.",
+  "Situation après paiement : {n} mois restant(s) dû(s)": v => plural(v.n, 'Balance after payment: 1 month still due', `Balance after payment: ${v.n} months still due`),
+  "Situation après paiement : à jour":"Balance after payment: up to date", "PAYÉ":"PAID",
+  "Envoyer au parent par WhatsApp":"Send to parent on WhatsApp",
+  "Bonjour {parent}, {ecole} vous rappelle que la scolarité de {eleve} ({classe}) présente un retard de {n} mois ({mois}), soit {montant}. Vous pouvez payer par Wave ou Orange Money depuis votre espace parent. Merci.":
+    v => `Hello ${v.parent}, ${v.ecole} would like to remind you that the school fees for ${v.eleve} (${v.classe}) are ${plural(v.n,'1 month','' + v.n + ' months')} overdue (${v.mois}), a total of ${v.montant}. You can pay with Wave or Orange Money from your parent app. Thank you.`,
+  "Canal":"Channel", "Message":"Message", "Envoyer la relance":"Send reminder",
+  "Relance envoyée par {c} à {p} (simulation)":"Reminder sent by {c} to {p} (simulation)",
+  "Envoyer un rappel WhatsApp personnalisé aux {n} parents concernés ?":"Send a personalised WhatsApp reminder to the {n} parents concerned?",
+  "{n} rappels WhatsApp envoyés (simulation)":"{n} WhatsApp reminders sent (simulation)",
+  "Reçu envoyé par WhatsApp à {p} (simulation)":"Receipt sent on WhatsApp to {p} (simulation)",
+  // Notes
+  "1er trimestre · Composition":"Term 1 · Exams", "Saisie des notes":"Enter grades", "Résultats & bulletins":"Results & report cards",
+  "Matière":"Subject", "{m} (coef. {c})":"{m} (weight {c})", "Enseignant(e) : {p}":"Teacher: {p}",
+  "Note / 20":"Grade / 20", "Appréciation":"Comment", "Note de {n}":"Grade for {n}",
+  "Enregistrer les notes":"Save grades", "Moyenne de la classe : {m} · {n}/{t} notes saisies":"Class average: {m} · {n}/{t} grades entered",
+  "{n} note(s) invalide(s) ignorée(s)":"{n} invalid grade(s) ignored", "Notes de {m} enregistrées pour la classe de {c}":"{m} grades saved for class {c}",
+  "Moyenne de la classe":"Class average", "Moyenne ≥ 10":"Average ≥ 10", "{p}% de réussite":"{p}% pass rate",
+  "Premier(e) de la classe":"Top of the class", "Rang":"Rank", "Distinction":"Distinction", "Bulletin":"Report card",
+  "République du Sénégal · Un Peuple – Un But – Une Foi":"Republic of Senegal · One People – One Goal – One Faith",
+  "Année {a}":"Year {a}", "1er trimestre":"Term 1", "Bulletin de notes":"Report card", "Élève : ":"Student: ",
+  "Né(e) le {d} · Matricule {n}":"Born on {d} · ID {n}", "Classe : ":"Class: ", "({n} élèves)":"({n} students)",
+  "Coef.":"Weight", "Note /20":"Grade /20", "Note × coef.":"Weighted", "Moy. classe":"Class avg.", "Total":"Total",
+  "Moyenne trimestrielle":"Term average", "Absences":"Absences", "Retards":"Late arrivals",
+  "{n} (dont {j} justifiée(s))":"{n} ({j} excused)", "Signature du parent":"Parent's signature", "Le Directeur":"Head teacher",
+  "Bulletin – {n}":"Report card – {n}", "Bulletin PDF envoyé par WhatsApp à {p} (simulation)":"PDF report card sent on WhatsApp to {p} (simulation)",
+  // Absences
+  "Les parents sont prévenus automatiquement en cas d'absence ou de retard":"Parents are notified automatically of absences and late arrivals",
+  "Tous présents":"All present", "Présent":"Present", "Absent":"Absent",
+  "Prévenir les parents par SMS / WhatsApp":"Notify parents by SMS / WhatsApp", "Valider l'appel":"Save attendance",
+  "{p} présents · {a} absents · {r} retards":"{p} present · {a} absent · {r} late", "Absences récentes":"Recent absences", "Justifiée":"Excused",
+  "Appel enregistré · {n} parent(s) prévenu(s) (simulation)":"Attendance saved · {n} parent(s) notified (simulation)",
+  "Appel enregistré · tous présents":"Attendance saved · everyone present",
+  // Communication
+  "Annonces aux parents par WhatsApp ou SMS":"Announcements to parents by WhatsApp or SMS", "Nouvelle annonce":"New announcement",
+  "Destinataires":"Recipients", "Toute l'école ({n} familles)":"Whole school ({n} families)", "Parents de {c}":"Parents of {c}",
+  "Modèle":"Template", "— Choisir un modèle —":"— Choose a template —", "Écrivez votre message…":"Write your message…",
+  "{n} / 640 caractères":"{n} / 640 characters", "Envoyer":"Send", "Historique des envois":"Sent messages",
+  "{d} · {c} · {n} destinataire(s)":"{d} · {c} · {n} recipient(s)", "Toute l'école":"Whole school",
+  "Parents en retard":"Parents behind on payments", "Parents en retard ({c})":"Parents behind on payments ({c})", "Parents ({c})":"Parents ({c})",
+  "Annonce envoyée à {n} familles par {c} (simulation)":"Announcement sent to {n} families by {c} (simulation)",
+  "Réunion de parents":"Parents' meeting", "Congé / fermeture":"Holiday / closure", "Rappel de scolarité":"Fee reminder", "Résultats disponibles":"Results available",
+  "Chers parents, une réunion se tiendra le samedi [date] à 10h à l'école. Ordre du jour : résultats du trimestre et vie scolaire. Votre présence est importante.":"Dear parents, a meeting will be held on Saturday [date] at 10am at the school. Agenda: term results and school life. Your attendance is important.",
+  "Chers parents, l'école sera fermée du [date] au [date]. Reprise des cours le [date] à 8h. Bonnes fêtes à toutes les familles.":"Dear parents, the school will be closed from [date] to [date]. Classes resume on [date] at 8am. Happy holidays to all families.",
+  "Chers parents, nous vous rappelons que la mensualité du mois est payable avant le 10. Paiement possible par Wave, Orange Money ou au secrétariat.":"Dear parents, this is a reminder that the monthly fee is due before the 10th. You can pay with Wave, Orange Money or at the school office.",
+  "Chers parents, les bulletins du 1er trimestre sont disponibles dans votre espace parent et seront remis lors de la réunion.":"Dear parents, the Term 1 report cards are available in your parent app and will be handed out at the meeting.",
+  "Chers parents, la réunion du 1er trimestre aura lieu le samedi 22 novembre à 10h dans la cour de l'école. Votre présence est vivement souhaitée.":"Dear parents, the Term 1 meeting will take place on Saturday 22 November at 10am in the school yard. We very much hope to see you there.",
+  "Rappel : la tenue scolaire est obligatoire à partir du lundi 3 novembre.":"Reminder: school uniform is compulsory from Monday 3 November.",
+  "Rappel personnalisé de scolarité (montant et mois impayés propres à chaque élève).":"Personalised fee reminder (amount and unpaid months specific to each student).",
+  "Notification automatique : absence ou retard de votre enfant le {d}.":"Automatic notification: your child was absent or late on {d}.",
+  // Espace parent
+  "Aperçu de l'application mobile utilisée par les parents":"Preview of the mobile app used by parents", "Bonjour,":"Hello,",
+  "Choisir l'enfant":"Choose a child", "à payer : {m}":"due: {m}", "Payer avec Wave":"Pay with Wave", "Orange Money":"Orange Money",
+  "À jour ✓":"Up to date ✓", "{n} mois payés sur {t} · prochain : {m} ({a})":"{n} of {t} months paid · next: {m} ({a})",
+  "Payer {m} en avance":"Pay {m} in advance", "Résultats · 1er trimestre":"Results · Term 1", "Voir le bulletin complet":"View full report card",
+  "Absences & retards":"Absences & late arrivals", "Aucune absence ce trimestre 👏":"No absences this term 👏",
+  "Annonces de l'école":"School announcements", "Aucune annonce.":"No announcements.", "Ce que voit le parent":"What parents see",
+  "<b>Situation de la scolarité</b> en temps réel, avec les mois restant dus.":"<b>Real-time fee status</b>, with the months still due.",
+  "<b>Paiement en un clic</b> par Wave, Orange Money ou Free Money ; le reçu arrive sur WhatsApp et l'école le voit immédiatement.":"<b>One-click payment</b> with Wave, Orange Money or Free Money; the receipt arrives on WhatsApp and the school sees it instantly.",
+  "<b>Notes, moyenne, rang</b> et bulletin téléchargeable en PDF.":"<b>Grades, average, rank</b> and a downloadable PDF report card.",
+  "<b>Alerte immédiate</b> en cas d'absence ou de retard.":"<b>Instant alert</b> when the child is absent or late.",
+  "<b>Annonces de l'école</b> : réunions, congés, sorties.":"<b>School announcements</b>: meetings, holidays, trips.",
+  "Dans la version finale, cet espace sera une application installable (PWA) qui fonctionne sur les téléphones d'entrée de gamme, avec une version en wolof et des notifications WhatsApp pour les parents qui n'installent pas l'application.":"In the final version, this will be an installable app (PWA) that works on entry-level phones, with a Wolof version and WhatsApp notifications for parents who don't install the app.",
+  "Essayez : choisissez un enfant en retard de paiement, puis cliquez sur « Payer avec Wave ». Le paiement apparaît ensuite dans le tableau de bord de l'école.":"Try it: choose a child who is behind on payments, then click \"Pay with Wave\". The payment then shows up on the school dashboard.",
+  "Paiement {m}":"{m} payment", "Scolarité de {n} · {m}":"Fees for {n} · {m}", "Bénéficiaire : {e}":"Payee: {e}",
+  "Numéro {m}":"{m} number", "Confirmer le paiement":"Confirm payment", "Validez sur votre téléphone…":"Approve on your phone…",
+  "Paiement {m} reçu : {a} (simulation)":"{m} payment received: {a} (simulation)",
+  // Connexion
+  "Tirez sur la chaînette pour allumer 💡":"Pull the chain to switch on the light 💡", "Bienvenue 👋🏾":"Welcome 👋🏾",
+  "Connectez-vous pour accéder à votre école":"Sign in to access your school", "Profil":"Profile",
+  "Direction":"Management", "Secrétariat":"Office", "Enseignant":"Teacher",
+  "E-mail ou identifiant":"Email or username", "Numéro de téléphone":"Phone number", "Mot de passe":"Password",
+  "Mot de passe oublié ?":"Forgot password?", "Votre mot de passe":"Your password", "Se souvenir de moi":"Remember me",
+  "Se connecter":"Sign in", "ou continuer avec":"or continue with", "Code par SMS":"SMS code",
+  "Démo : n'importe quel identifiant fonctionne.":"Demo: any username works.",
+  "Allumer la lampe":"Turn on the lamp", "Éteindre la lampe":"Turn off the lamp",
+  "Afficher le mot de passe":"Show password", "Masquer le mot de passe":"Hide password",
+  "Un lien de réinitialisation a été envoyé (simulation)":"A reset link has been sent (simulation)",
+  "Code à 6 chiffres envoyé par SMS (simulation)":"6-digit code sent by SMS (simulation)",
+  "Entrez votre numéro de téléphone":"Enter your phone number", "Entrez votre identifiant":"Enter your username",
+  "Entrez votre mot de passe":"Enter your password", "Connecté en tant que {r}":"Signed in as {r}",
+  "Effacer vos modifications et recharger les données de démonstration ?":"Erase your changes and reload the demo data?",
+  "Démo réinitialisée":"Demo reset",
+};
+function t(s, v){
+  let r = (LANG === 'en' && EN[s] !== undefined) ? EN[s] : s;
+  if(typeof r === 'function') return r(v || {});
+  if(v) r = r.replace(/\{(\w+)\}/g, (m, k) => v[k] !== undefined ? v[k] : m);
+  return r;
+}
+const LOC = () => LANG === 'en' ? 'en-GB' : 'fr-FR';
+
 /* ============ Configuration ============ */
 const SCHOOL = {nom:"Groupe Scolaire Les Baobabs", ville:"Parcelles Assainies, Dakar", annee:"2026-2027", tel:"33 800 00 00"};
 const CLASSES = [
@@ -362,24 +521,35 @@ const CLASSES = [
   {id:'5e', cycle:'Collège',  mens:25000, insc:35000, prof:'Mme Kane'},
 ];
 const MOIS = ['Octobre','Novembre','Décembre','Janvier','Février','Mars','Avril','Mai','Juin'];
+const NB_MOIS = MOIS.length;
 const MOIS_DUS = 2; // à la mi-novembre : octobre et novembre sont exigibles
+const mois = i => t(MOIS[i]);
+const moisList = arr => arr.map(mois).join(', ');
 const MATIERES = {
-  'Primaire':[['Français',3],['Mathématiques',3],['Sciences d\'observation',2],['Histoire-Géographie',2],['Éducation civique',1],['Anglais',1],['EPS',1]],
+  'Primaire':[['Français',3],['Mathématiques',3],["Sciences d'observation",2],['Histoire-Géographie',2],['Éducation civique',1],['Anglais',1],['EPS',1]],
   'Collège':[['Français',4],['Mathématiques',4],['Anglais',2],['SVT',2],['Histoire-Géographie',2],['Éducation civique',1],['EPS',1]],
 };
 const MODES = ['Espèces','Wave','Orange Money','Free Money'];
-const STORE = 'jang-demo-v1';
+const STORE = 'jang-demo-v2';
+// Textes des messages enregistrés par l'application (traduits à l'affichage)
+const MSG_TEXT = {
+  seedReunion: "Chers parents, la réunion du 1er trimestre aura lieu le samedi 22 novembre à 10h dans la cour de l'école. Votre présence est vivement souhaitée.",
+  seedTenue: "Rappel : la tenue scolaire est obligatoire à partir du lundi 3 novembre.",
+  relanceGroupe: "Rappel personnalisé de scolarité (montant et mois impayés propres à chaque élève).",
+  absenceAuto: "Notification automatique : absence ou retard de votre enfant le {d}.",
+};
 
 /* ============ Utilitaires ============ */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fcfa = n => Math.round(n).toLocaleString('fr-FR').replace(/ | /g,' ') + ' F';
-const fdate = d => new Date(d).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+const fcfa = n => Math.round(n).toLocaleString(LOC()).replace(/ | /g,' ') + ' F';
+const fdate = d => new Date(d).toLocaleDateString(LOC(),{day:'2-digit',month:'short',year:'numeric'});
 const todayISO = () => new Date().toISOString().slice(0,10);
 const classOf = id => CLASSES.find(c => c.id === id);
 const subjects = cls => MATIERES[classOf(cls).cycle];
 const initials = s => s.prenom[0] + s.nom[0];
 const avatar = s => `<span class="av c${s.id % 5}">${esc(initials(s))}</span>`;
+const matricule = s => String(s.id).padStart(4,'0');
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 
 /* ============ Données de démonstration ============ */
@@ -404,26 +574,22 @@ function seed(){
         tel: `${pick(['77','78','76','70'])} ${100+Math.floor(r()*899)} ${String(Math.floor(r()*100)).padStart(2,'0')} ${String(Math.floor(r()*100)).padStart(2,'0')}`,
       };
       students.push(s);
-      // inscription
       const d1 = `2026-${pick(['09','09','10'])}-${String(1+Math.floor(r()*28)).padStart(2,'0')}`;
       payments.push({id:pid++, studentId:s.id, motif:'Inscription', mois:[], montant:c.insc, mode:pick(MODES), date:d1});
-      // mensualités
       const x = r(); const k = x < .12 ? 0 : x < .36 ? 1 : x < .86 ? 2 : 3;
       for(let m=0;m<k;m++){
         const d = m===0 ? `2026-10-${String(2+Math.floor(r()*25)).padStart(2,'0')}` : `2026-11-${String(1+Math.floor(r()*15)).padStart(2,'0')}`;
         payments.push({id:pid++, studentId:s.id, motif:'Mensualité', mois:[m], montant:c.mens, mode:pick(MODES), date:d});
       }
-      // notes de la 1re composition
       const base = 7 + r()*9;
       grades[s.id] = {};
       subjects(c.id).forEach(([m]) => { grades[s.id][m] = Math.max(2, Math.min(19.5, Math.round((base + (r()-.5)*7)*2)/2)); });
-      // absences
       if(r() < .35){ const nb = 1 + Math.floor(r()*3); for(let a=0;a<nb;a++) absences.push({studentId:s.id, date:`2026-${pick(['10','11'])}-${String(1+Math.floor(r()*16)).padStart(2,'0')}`, type:r()<.65?'Absence':'Retard', justifie:r()<.5}); }
     }
   });
   const messages = [
-    {date:'2026-11-03', canal:'WhatsApp', dest:'Toute l\'école', nb:students.length, texte:'Chers parents, la réunion du 1er trimestre aura lieu le samedi 22 novembre à 10h dans la cour de l\'école. Votre présence est vivement souhaitée.', auto:false},
-    {date:'2026-10-28', canal:'SMS', dest:'CM2', nb:students.filter(s=>s.classe==='CM2').length, texte:'Rappel : la tenue scolaire est obligatoire à partir du lundi 3 novembre.', auto:false},
+    {date:'2026-11-03', canal:'WhatsApp', scope:'all', nb:students.length, key:'seedReunion', auto:false},
+    {date:'2026-10-28', canal:'SMS', scope:'class', cls:'CM2', nb:students.filter(s=>s.classe==='CM2').length, key:'seedTenue', auto:false},
   ];
   return {students, payments, absences, grades, messages, nextPid:pid, nextId:id};
 }
@@ -439,11 +605,11 @@ const paidMonths = sid => paysOf(sid).filter(p => p.motif === 'Mensualité').red
 function finance(s){
   const c = classOf(s.classe), paid = paidMonths(s.id);
   const retard = Math.max(0, MOIS_DUS - paid);
-  return {paid, retard, du: retard * c.mens, mens:c.mens, avance: Math.max(0, paid - MOIS_DUS), prochain: paid < MOIS.length ? paid : null};
+  return {paid, retard, du: retard * c.mens, mens:c.mens, avance: Math.max(0, paid - MOIS_DUS), prochain: paid < NB_MOIS ? paid : null};
 }
 function statusBadge(f){
-  if(f.retard === 0) return f.avance ? `<span class="badge b-info">En avance</span>` : `<span class="badge b-ok">À jour</span>`;
-  return `<span class="badge ${f.retard>1?'b-bad':'b-warn'}">${f.retard} mois de retard</span>`;
+  if(f.retard === 0) return f.avance ? `<span class="badge b-info">${t('En avance')}</span>` : `<span class="badge b-ok">${t('À jour')}</span>`;
+  return `<span class="badge ${f.retard>1?'b-bad':'b-warn'}">${t('{n} mois de retard',{n:f.retard})}</span>`;
 }
 function average(sid){
   const s = studentById(sid), g = DB.grades[sid] || {};
@@ -457,13 +623,26 @@ function ranking(cls){
   list.forEach((x,i) => x.rang = i + 1);
   return list;
 }
-const appreciation = m => m < 8 ? 'Insuffisant' : m < 10 ? 'Faible' : m < 12 ? 'Passable' : m < 14 ? 'Assez bien' : m < 16 ? 'Bien' : 'Très bien';
-const distinction = m => m >= 16 ? 'Félicitations' : m >= 14 ? 'Encouragements' : m >= 12 ? 'Tableau d\'honneur' : m < 8 ? 'Avertissement' : '—';
-const rankLabel = n => n === 1 ? '1er' : n + 'e';
+const appreciation = m => t(m < 8 ? 'Insuffisant' : m < 10 ? 'Faible' : m < 12 ? 'Passable' : m < 14 ? 'Assez bien' : m < 16 ? 'Bien' : 'Très bien');
+const distinctionKey = m => m >= 16 ? 'Félicitations' : m >= 14 ? 'Encouragements' : m >= 12 ? "Tableau d'honneur" : m < 8 ? 'Avertissement' : '—';
+const distinction = m => t(distinctionKey(m));
+function rankLabel(n){
+  if(LANG === 'en'){ const s = ['th','st','nd','rd'], v = n % 100; return n + (s[(v-20)%10] || s[v] || s[0]); }
+  return n === 1 ? '1er' : n + 'e';
+}
+const motifLabel = p => t(p.motif) + (p.mois.length ? ' – ' + moisList(p.mois) : '');
+function destLabel(m){
+  if(m.scope === 'all') return t("Toute l'école");
+  if(m.scope === 'class') return t('Parents de {c}',{c:m.cls});
+  if(m.scope === 'late') return m.cls ? t('Parents en retard ({c})',{c:m.cls}) : t('Parents en retard');
+  if(m.scope === 'absence') return t('Parents ({c})',{c:m.cls});
+  return m.name || '';
+}
+const msgText = m => m.key ? t(MSG_TEXT[m.key], {d: m.ref ? fdate(m.ref) : ''}) : m.texte;
 
 /* ============ UI : toast & modal ============ */
 let toastTimer;
-function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 3200); }
+function toast(msg){ const el = $('#toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3200); }
 let lastFocus;
 function openModal(html, wide=false){ lastFocus = document.activeElement; $('#modal-body').innerHTML = html; $('#modal-box').classList.toggle('wide', wide); $('#modal').hidden = false; document.body.style.overflow='hidden'; setTimeout(() => ($('#modal-body').querySelector('input,select,textarea,button') || $('#modal-close')).focus(), 30); }
 function closeModal(){ $('#modal').hidden = true; document.body.style.overflow=''; if(lastFocus) lastFocus.focus(); }
@@ -473,13 +652,13 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('#modal'
 
 /* ============ Navigation ============ */
 const PAGES = {
-  tableau:      {ico:'📊', label:'Tableau de bord', render:viewDashboard},
-  eleves:       {ico:'👦🏿', label:'Élèves', render:viewEleves},
-  paiements:    {ico:'💰', label:'Scolarités', render:viewPaiements},
-  notes:        {ico:'📝', label:'Notes & bulletins', render:viewNotes},
-  absences:     {ico:'✅', label:'Appel & absences', render:viewAbsences},
-  messages:     {ico:'💬', label:'Communication', render:viewMessages},
-  parent:       {ico:'📱', label:'Espace parent', render:viewParent},
+  tableau:   {ico:'📊', label:'Tableau de bord', render:viewDashboard},
+  eleves:    {ico:'👦🏿', label:'Élèves', render:viewEleves},
+  paiements: {ico:'💰', label:'Scolarités', render:viewPaiements},
+  notes:     {ico:'📝', label:'Notes & bulletins', render:viewNotes},
+  absences:  {ico:'✅', label:'Appel & absences', render:viewAbsences},
+  messages:  {ico:'💬', label:'Communication', render:viewMessages},
+  parent:    {ico:'📱', label:'Espace parent', render:viewParent},
 };
 function setHeader(title, sub, actions=''){ $('#page-title').textContent = title; $('#page-sub').textContent = sub; $('#page-actions').innerHTML = actions; }
 function route(){
@@ -490,58 +669,56 @@ function route(){
   window.scrollTo(0,0);
 }
 function renderNav(){
-  $('#nav').innerHTML = Object.entries(PAGES).map(([k,p]) => `<button data-page="${k}"><span class="ico" aria-hidden="true">${p.ico}</span>${p.label}</button>`).join('');
+  $('#nav').innerHTML = Object.entries(PAGES).map(([k,p]) => `<button data-page="${k}"><span class="ico" aria-hidden="true">${p.ico}</span>${t(p.label)}</button>`).join('');
   $('#nav').onclick = e => { const b = e.target.closest('button'); if(b) location.hash = b.dataset.page; };
   $('#school-name').textContent = SCHOOL.nom;
-  $('#school-year').textContent = 'Année scolaire ' + SCHOOL.annee;
+  $('#school-year').textContent = t('Année scolaire {a}',{a:SCHOOL.annee});
 }
-const classOptions = (sel, all=false) => (all ? `<option value="">Toutes les classes</option>` : '') + CLASSES.map(c => `<option value="${c.id}" ${c.id===sel?'selected':''}>${c.id}</option>`).join('');
+const classOptions = (sel, all=false) => (all ? `<option value="">${t('Toutes les classes')}</option>` : '') + CLASSES.map(c => `<option value="${c.id}" ${c.id===sel?'selected':''}>${c.id}</option>`).join('');
 
 /* ============ Tableau de bord ============ */
 function viewDashboard(){
-  setHeader('Tableau de bord', `${SCHOOL.nom} · ${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}`,
-    `<button class="btn primary" data-act="encaisser">+ Encaisser un paiement</button>`);
+  setHeader(t('Tableau de bord'), `${SCHOOL.nom} · ${new Date().toLocaleDateString(LOC(),{weekday:'long',day:'numeric',month:'long',year:'numeric'})}`,
+    `<button class="btn primary" data-act="encaisser">${t('+ Encaisser un paiement')}</button>`);
   const S = DB.students;
   const fins = S.map(s => ({s, f:finance(s)}));
   const totalDu = fins.reduce((a,x) => a + MOIS_DUS * x.f.mens, 0);
   const impayes = fins.reduce((a,x) => a + x.f.du, 0);
   const encAnnee = DB.payments.reduce((a,p) => a + p.montant, 0);
-  const now = new Date(); const ym = now.toISOString().slice(0,7);
+  const ym = new Date().toISOString().slice(0,7);
   const encMois = DB.payments.filter(p => p.date.slice(0,7) === ym).reduce((a,p) => a + p.montant, 0);
   const taux = Math.round((1 - impayes/totalDu) * 100);
   const enRetard = fins.filter(x => x.f.retard > 0).sort((a,b) => b.f.du - a.f.du);
   const filles = S.filter(s => s.sexe==='F').length;
   const absJour = DB.absences.filter(a => a.date === todayISO());
-
   const bars = CLASSES.map(c => {
     const ls = fins.filter(x => x.s.classe === c.id);
     const du = ls.length * MOIS_DUS * c.mens, rest = ls.reduce((a,x) => a + x.f.du, 0);
     const p = du ? Math.round((1 - rest/du)*100) : 100;
-    return `<div class="bar-row"><b>${c.id}</b><div class="bar" role="img" aria-label="${c.id} : ${p}% recouvré"><span class="${p<70?'low':p<85?'mid':''}" style="width:${p}%"></span></div><span class="pct">${p}%</span></div>`;
+    return `<div class="bar-row"><b>${c.id}</b><div class="bar" role="img" aria-label="${t('{c} : {p}% recouvré',{c:c.id,p})}"><span class="${p<70?'low':p<85?'mid':''}" style="width:${p}%"></span></div><span class="pct">${p}%</span></div>`;
   }).join('');
   const last = [...DB.payments].sort((a,b) => b.date.localeCompare(a.date) || b.id - a.id).slice(0,6);
-
   $('#view').innerHTML = `
   <div class="grid kpis">
-    <div class="card kpi"><div class="label">Élèves inscrits</div><div class="value">${S.length}</div><div class="sub">${filles} filles · ${S.length-filles} garçons · ${CLASSES.length} classes</div></div>
-    <div class="card kpi ok"><div class="label">Encaissé ce mois-ci</div><div class="value">${fcfa(encMois)}</div><div class="sub">${fcfa(encAnnee)} depuis la rentrée</div></div>
-    <div class="card kpi alert"><div class="label">Impayés à recouvrer</div><div class="value">${fcfa(impayes)}</div><div class="sub">${enRetard.length} élèves en retard</div></div>
-    <div class="card kpi"><div class="label">Taux de recouvrement</div><div class="value">${taux}%</div><div class="sub">Mensualités d'octobre et novembre</div></div>
+    <div class="card kpi"><div class="label">${t('Élèves inscrits')}</div><div class="value">${S.length}</div><div class="sub">${t('{f} filles · {g} garçons · {c} classes',{f:filles,g:S.length-filles,c:CLASSES.length})}</div></div>
+    <div class="card kpi ok"><div class="label">${t('Encaissé ce mois-ci')}</div><div class="value">${fcfa(encMois)}</div><div class="sub">${t('{m} depuis la rentrée',{m:fcfa(encAnnee)})}</div></div>
+    <div class="card kpi alert"><div class="label">${t('Impayés à recouvrer')}</div><div class="value">${fcfa(impayes)}</div><div class="sub">${t('{n} élèves en retard',{n:enRetard.length})}</div></div>
+    <div class="card kpi"><div class="label">${t('Taux de recouvrement')}</div><div class="value">${taux}%</div><div class="sub">${t("Mensualités d'octobre et novembre")}</div></div>
   </div>
   <div class="grid two" style="margin-top:16px">
-    <div class="card"><h3>Élèves en retard de paiement <a href="#paiements">Tout voir</a></h3>
-      <div class="table-wrap"><table><thead><tr><th>Élève</th><th>Classe</th><th>Retard</th><th class="num">Montant dû</th><th></th></tr></thead><tbody>
-      ${enRetard.slice(0,7).map(x => `<tr><td><div class="who">${avatar(x.s)}<div><b>${esc(fullName(x.s))}</b><small>${esc(x.s.parent)}</small></div></div></td><td>${x.s.classe}</td><td>${statusBadge(x.f)}</td><td class="num"><b>${fcfa(x.f.du)}</b></td><td class="right"><button class="btn sm" data-act="relancer" data-id="${x.s.id}">Relancer</button></td></tr>`).join('')}
+    <div class="card"><h3>${t('Élèves en retard de paiement')} <a href="#paiements">${t('Tout voir')}</a></h3>
+      <div class="table-wrap"><table><thead><tr><th>${t('Élève')}</th><th>${t('Classe')}</th><th>${t('Retard')}</th><th class="num">${t('Montant dû')}</th><th></th></tr></thead><tbody>
+      ${enRetard.slice(0,7).map(x => `<tr><td><div class="who">${avatar(x.s)}<div><b>${esc(fullName(x.s))}</b><small>${esc(x.s.parent)}</small></div></div></td><td>${x.s.classe}</td><td>${statusBadge(x.f)}</td><td class="num"><b>${fcfa(x.f.du)}</b></td><td class="right"><button class="btn sm" data-act="relancer" data-id="${x.s.id}">${t('Relancer')}</button></td></tr>`).join('')}
       </tbody></table></div>
-      <div class="row" style="margin-top:12px"><button class="btn amber" data-act="relancer-tous">Relancer les ${enRetard.length} parents par WhatsApp</button></div>
+      <div class="row" style="margin-top:12px"><button class="btn amber" data-act="relancer-tous">${t('Relancer les {n} parents par WhatsApp',{n:enRetard.length})}</button></div>
     </div>
     <div class="grid">
-      <div class="card"><h3>Recouvrement par classe</h3>${bars}</div>
-      <div class="card"><h3>Derniers paiements <a href="#paiements?tab=historique">Historique</a></h3>
-        ${last.map(p => { const s = studentById(p.studentId); return `<div class="list-item"><div><b>${esc(fullName(s))}</b> <span class="muted">· ${s.classe}</span><br><small class="muted">${p.motif}${p.mois.length?' '+p.mois.map(m=>MOIS[m]).join(', '):''} · ${p.mode} · ${fdate(p.date)}</small></div><b>${fcfa(p.montant)}</b></div>`; }).join('')}
+      <div class="card"><h3>${t('Recouvrement par classe')}</h3>${bars}</div>
+      <div class="card"><h3>${t('Derniers paiements')} <a href="#paiements?tab=historique">${t('Historique')}</a></h3>
+        ${last.map(p => { const s = studentById(p.studentId); return `<div class="list-item"><div><b>${esc(fullName(s))}</b> <span class="muted">· ${s.classe}</span><br><small class="muted">${motifLabel(p)} · ${t(p.mode)} · ${fdate(p.date)}</small></div><b>${fcfa(p.montant)}</b></div>`; }).join('')}
       </div>
-      <div class="card"><h3>Absences aujourd'hui <a href="#absences">Faire l'appel</a></h3>
-        ${absJour.length ? absJour.map(a => { const s = studentById(a.studentId); return `<div class="list-item"><span>${esc(fullName(s))} <span class="muted">· ${s.classe}</span></span><span class="badge ${a.type==='Absence'?'b-bad':'b-warn'}">${a.type}</span></div>`; }).join('') : `<p class="muted" style="margin:0">Aucune absence enregistrée aujourd'hui.</p>`}
+      <div class="card"><h3>${t("Absences aujourd'hui")} <a href="#absences">${t("Faire l'appel")}</a></h3>
+        ${absJour.length ? absJour.map(a => { const s = studentById(a.studentId); return `<div class="list-item"><span>${esc(fullName(s))} <span class="muted">· ${s.classe}</span></span><span class="badge ${a.type==='Absence'?'b-bad':'b-warn'}">${t(a.type)}</span></div>`; }).join('') : `<p class="muted" style="margin:0">${t("Aucune absence enregistrée aujourd'hui.")}</p>`}
       </div>
     </div>
   </div>`;
@@ -550,21 +727,21 @@ function viewDashboard(){
 /* ============ Élèves ============ */
 let elevesFilter = {q:'', classe:''};
 function viewEleves(){
-  setHeader('Élèves', `${DB.students.length} élèves inscrits pour l'année ${SCHOOL.annee}`, `<button class="btn primary" data-act="inscrire">+ Inscrire un élève</button>`);
+  setHeader(t('Élèves'), t("{n} élèves inscrits pour l'année {a}",{n:DB.students.length,a:SCHOOL.annee}), `<button class="btn primary" data-act="inscrire">${t('+ Inscrire un élève')}</button>`);
   $('#view').innerHTML = `
   <div class="card">
     <div class="toolbar">
-      <input class="input search" id="q" type="search" placeholder="Rechercher un élève, un parent, un numéro…" value="${esc(elevesFilter.q)}" aria-label="Rechercher">
-      <select class="input" id="fc" aria-label="Classe">${classOptions(elevesFilter.classe, true)}</select>
+      <input class="input search" id="q" type="search" placeholder="${t('Rechercher un élève, un parent, un numéro…')}" value="${esc(elevesFilter.q)}" aria-label="${t('Rechercher')}">
+      <select class="input" id="fc" aria-label="${t('Classe')}">${classOptions(elevesFilter.classe, true)}</select>
     </div>
-    <div class="table-wrap"><table><thead><tr><th>Élève</th><th>Classe</th><th class="hide-sm">Parent / tuteur</th><th class="hide-sm">Téléphone</th><th>Scolarité</th><th class="num hide-sm">Moyenne</th></tr></thead><tbody id="eleves-body"></tbody></table></div>
+    <div class="table-wrap"><table><thead><tr><th>${t('Élève')}</th><th>${t('Classe')}</th><th class="hide-sm">${t('Parent / tuteur')}</th><th class="hide-sm">${t('Téléphone')}</th><th>${t('Scolarité')}</th><th class="num hide-sm">${t('Moyenne')}</th></tr></thead><tbody id="eleves-body"></tbody></table></div>
   </div>`;
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
   const draw = () => {
-    const q = elevesFilter.q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-    const list = DB.students.filter(s => (!elevesFilter.classe || s.classe === elevesFilter.classe) &&
-      (!q || `${s.prenom} ${s.nom} ${s.parent} ${s.tel}`.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').includes(q)));
-    $('#eleves-body').innerHTML = list.length ? list.map(s => { const m = average(s.id); return `<tr class="click" data-act="fiche" data-id="${s.id}" tabindex="0"><td><div class="who">${avatar(s)}<div><b>${esc(fullName(s))}</b><small>Matricule ${String(s.id).padStart(4,'0')}</small></div></div></td><td>${s.classe}</td><td class="hide-sm">${esc(s.parent)}</td><td class="hide-sm">${esc(s.tel)}</td><td>${statusBadge(finance(s))}</td><td class="num hide-sm">${m!=null?m.toFixed(2):'—'}</td></tr>`; }).join('')
-      : `<tr><td colspan="6" class="empty">Aucun élève ne correspond à cette recherche.</td></tr>`;
+    const q = norm(elevesFilter.q);
+    const list = DB.students.filter(s => (!elevesFilter.classe || s.classe === elevesFilter.classe) && (!q || norm(`${s.prenom} ${s.nom} ${s.parent} ${s.tel}`).includes(q)));
+    $('#eleves-body').innerHTML = list.length ? list.map(s => { const m = average(s.id); return `<tr class="click" data-act="fiche" data-id="${s.id}" tabindex="0"><td><div class="who">${avatar(s)}<div><b>${esc(fullName(s))}</b><small>${t('Matricule {n}',{n:matricule(s)})}</small></div></div></td><td>${s.classe}</td><td class="hide-sm">${esc(s.parent)}</td><td class="hide-sm">${esc(s.tel)}</td><td>${statusBadge(finance(s))}</td><td class="num hide-sm">${m!=null?m.toFixed(2):'—'}</td></tr>`; }).join('')
+      : `<tr><td colspan="6" class="empty">${t('Aucun élève ne correspond à cette recherche.')}</td></tr>`;
   };
   $('#q').oninput = e => { elevesFilter.q = e.target.value; draw(); };
   $('#fc').onchange = e => { elevesFilter.classe = e.target.value; draw(); };
@@ -574,42 +751,42 @@ function openFiche(id){
   const s = studentById(id), c = classOf(s.classe), f = finance(s), m = average(s.id);
   const pays = paysOf(s.id).sort((a,b) => b.date.localeCompare(a.date));
   const abs = DB.absences.filter(a => a.studentId === s.id);
-  const rk = ranking(s.classe).find(x => x.s.id === s.id);
+  const rk = ranking(s.classe), me = rk.find(x => x.s.id === s.id);
   openModal(`
-    <div class="who" style="margin-bottom:6px">${avatar(s)}<div><h2>${esc(fullName(s))}</h2><small>${c.id} · ${c.cycle} · Matricule ${String(s.id).padStart(4,'0')}</small></div></div>
+    <div class="who" style="margin-bottom:6px">${avatar(s)}<div><h2>${esc(fullName(s))}</h2><small>${c.id} · ${t(c.cycle)} · ${t('Matricule {n}',{n:matricule(s)})}</small></div></div>
     <div class="grid kpis" style="margin-top:14px">
-      <div class="card kpi"><div class="label">Scolarité</div><div style="margin-top:6px">${statusBadge(f)}</div><div class="sub">${f.paid} mois payés sur ${MOIS.length}</div></div>
-      <div class="card kpi"><div class="label">Moyenne 1er trim.</div><div class="value" style="font-size:22px">${m!=null?m.toFixed(2):'—'}</div><div class="sub">${rk?rankLabel(rk.rang)+' sur '+ranking(s.classe).length:''}</div></div>
-      <div class="card kpi"><div class="label">Absences / retards</div><div class="value" style="font-size:22px">${abs.filter(a=>a.type==='Absence').length} / ${abs.filter(a=>a.type==='Retard').length}</div></div>
+      <div class="card kpi"><div class="label">${t('Scolarité')}</div><div style="margin-top:6px">${statusBadge(f)}</div><div class="sub">${t('{n} mois payés sur {t}',{n:f.paid,t:NB_MOIS})}</div></div>
+      <div class="card kpi"><div class="label">${t('Moyenne 1er trim.')}</div><div class="value" style="font-size:22px">${m!=null?m.toFixed(2):'—'}</div><div class="sub">${me?t('{r} sur {n}',{r:rankLabel(me.rang),n:rk.length}):''}</div></div>
+      <div class="card kpi"><div class="label">${t('Absences / retards')}</div><div class="value" style="font-size:22px">${abs.filter(a=>a.type==='Absence').length} / ${abs.filter(a=>a.type==='Retard').length}</div></div>
     </div>
-    <h3 style="margin:18px 0 6px;font-size:15px">Informations</h3>
+    <h3 style="margin:18px 0 6px;font-size:15px">${t('Informations')}</h3>
     <table><tbody>
-      <tr><td class="muted">Date de naissance</td><td>${fdate(s.naissance)}</td></tr>
-      <tr><td class="muted">Parent / tuteur</td><td>${esc(s.parent)}</td></tr>
-      <tr><td class="muted">Téléphone</td><td>${esc(s.tel)}</td></tr>
-      <tr><td class="muted">Mensualité</td><td>${fcfa(c.mens)}</td></tr>
+      <tr><td class="muted">${t('Date de naissance')}</td><td>${fdate(s.naissance)}</td></tr>
+      <tr><td class="muted">${t('Parent / tuteur')}</td><td>${esc(s.parent)}</td></tr>
+      <tr><td class="muted">${t('Téléphone')}</td><td>${esc(s.tel)}</td></tr>
+      <tr><td class="muted">${t('Mensualité')}</td><td>${fcfa(c.mens)}</td></tr>
     </tbody></table>
-    <h3 style="margin:18px 0 6px;font-size:15px">Paiements</h3>
-    <div class="table-wrap"><table><thead><tr><th>Date</th><th>Motif</th><th>Mode</th><th class="num">Montant</th></tr></thead><tbody>
-      ${pays.map(p => `<tr><td>${fdate(p.date)}</td><td>${p.motif}${p.mois.length?' – '+p.mois.map(x=>MOIS[x]).join(', '):''}</td><td>${p.mode}</td><td class="num">${fcfa(p.montant)}</td></tr>`).join('') || `<tr><td colspan="4" class="empty">Aucun paiement</td></tr>`}
+    <h3 style="margin:18px 0 6px;font-size:15px">${t('Paiements')}</h3>
+    <div class="table-wrap"><table><thead><tr><th>${t('Date')}</th><th>${t('Motif')}</th><th>${t('Mode')}</th><th class="num">${t('Montant')}</th></tr></thead><tbody>
+      ${pays.map(p => `<tr><td>${fdate(p.date)}</td><td>${motifLabel(p)}</td><td>${t(p.mode)}</td><td class="num">${fcfa(p.montant)}</td></tr>`).join('') || `<tr><td colspan="4" class="empty">${t('Aucun paiement')}</td></tr>`}
     </tbody></table></div>
     <div class="actions">
-      ${f.retard ? `<button class="btn" data-act="relancer" data-id="${s.id}">Relancer le parent</button>` : ''}
-      <button class="btn" data-act="bulletin" data-id="${s.id}">Voir le bulletin</button>
-      <button class="btn primary" data-act="encaisser" data-id="${s.id}">Encaisser un paiement</button>
+      ${f.retard ? `<button class="btn" data-act="relancer" data-id="${s.id}">${t('Relancer le parent')}</button>` : ''}
+      <button class="btn" data-act="bulletin" data-id="${s.id}">${t('Voir le bulletin')}</button>
+      <button class="btn primary" data-act="encaisser" data-id="${s.id}">${t('Encaisser un paiement')}</button>
     </div>`, true);
 }
 function openInscription(){
-  openModal(`<h2>Inscrire un élève</h2><p class="muted" style="margin:0 0 14px">Année scolaire ${SCHOOL.annee}</p>
+  openModal(`<h2>${t('Inscrire un élève')}</h2><p class="muted" style="margin:0 0 14px">${t('Année scolaire {a}',{a:SCHOOL.annee})}</p>
   <form class="form" id="f-insc">
-    <div class="cols"><label>Prénom<input class="input" name="prenom" required></label><label>Nom<input class="input" name="nom" required></label></div>
-    <div class="cols"><label>Sexe<select class="input" name="sexe"><option value="F">Fille</option><option value="M">Garçon</option></select></label><label>Date de naissance<input class="input" type="date" name="naissance" required></label></div>
-    <div class="cols"><label>Classe<select class="input" name="classe" id="insc-classe">${classOptions('CI')}</select></label><label>Mode de paiement de l'inscription<select class="input" name="mode">${MODES.map(m=>`<option>${m}</option>`).join('')}</select></label></div>
-    <div class="cols"><label>Parent / tuteur<input class="input" name="parent" placeholder="Ex. Mme Fatou Diop" required></label><label>Téléphone (WhatsApp)<input class="input" name="tel" placeholder="77 123 45 67" inputmode="tel" required></label></div>
-    <div class="card" style="background:var(--green-l);border-color:var(--tint-border)"><div class="row space"><span>Frais d'inscription</span><b id="insc-frais"></b></div><div class="row space muted" style="font-size:13px"><span>Mensualité</span><span id="insc-mens"></span></div></div>
-    <div class="actions"><button type="button" class="btn" data-act="close">Annuler</button><button class="btn primary">Valider l'inscription</button></div>
+    <div class="cols"><label>${t('Prénom')}<input class="input" name="prenom" required></label><label>${t('Nom')}<input class="input" name="nom" required></label></div>
+    <div class="cols"><label>${t('Sexe')}<select class="input" name="sexe"><option value="F">${t('Fille')}</option><option value="M">${t('Garçon')}</option></select></label><label>${t('Date de naissance')}<input class="input" type="date" name="naissance" required></label></div>
+    <div class="cols"><label>${t('Classe')}<select class="input" name="classe" id="insc-classe">${classOptions('CI')}</select></label><label>${t("Mode de paiement de l'inscription")}<select class="input" name="mode">${MODES.map(m=>`<option value="${m}">${t(m)}</option>`).join('')}</select></label></div>
+    <div class="cols"><label>${t('Parent / tuteur')}<input class="input" name="parent" placeholder="${t('Ex. Mme Fatou Diop')}" required></label><label>${t('Téléphone (WhatsApp)')}<input class="input" name="tel" placeholder="77 123 45 67" inputmode="tel" required></label></div>
+    <div class="card" style="background:var(--green-l);border-color:var(--tint-border)"><div class="row space"><span>${t("Frais d'inscription")}</span><b id="insc-frais"></b></div><div class="row space muted" style="font-size:13px"><span>${t('Mensualité')}</span><span id="insc-mens"></span></div></div>
+    <div class="actions"><button type="button" class="btn" data-act="close">${t('Annuler')}</button><button class="btn primary">${t("Valider l'inscription")}</button></div>
   </form>`);
-  const upd = () => { const c = classOf($('#insc-classe').value); $('#insc-frais').textContent = fcfa(c.insc); $('#insc-mens').textContent = fcfa(c.mens) + ' / mois'; };
+  const upd = () => { const c = classOf($('#insc-classe').value); $('#insc-frais').textContent = fcfa(c.insc); $('#insc-mens').textContent = t('{m} / mois',{m:fcfa(c.mens)}); };
   $('#insc-classe').onchange = upd; upd();
   $('#f-insc').onsubmit = e => {
     e.preventDefault();
@@ -618,18 +795,19 @@ function openInscription(){
     DB.students.push(s); DB.grades[s.id] = {};
     const p = {id:DB.nextPid++, studentId:s.id, motif:'Inscription', mois:[], montant:classOf(s.classe).insc, mode:d.mode, date:todayISO()};
     DB.payments.push(p); save();
-    showReceipt(p, `${fullName(s)} est inscrit(e) en ${s.classe}.`);
+    showReceipt(p, t('{n} est inscrit(e) en {c}.',{n:fullName(s),c:s.classe}));
     route();
   };
 }
 
 /* ============ Scolarités / paiements ============ */
 let payTab = 'impayes', payClasse = '';
+const modeBadge = m => `<span class="badge ${m==='Wave'?'b-info':m==='Orange Money'?'b-warn':m==='Free Money'?'b-bad':'b-grey'}">${t(m)}</span>`;
 function viewPaiements(){
   const qs = new URLSearchParams(location.hash.split('?')[1] || ''); if(qs.get('tab')) payTab = qs.get('tab');
-  setHeader('Scolarités', 'Encaissements, reçus et relances des impayés', `<button class="btn primary" data-act="encaisser">+ Encaisser un paiement</button>`);
+  setHeader(t('Scolarités'), t('Encaissements, reçus et relances des impayés'), `<button class="btn primary" data-act="encaisser">${t('+ Encaisser un paiement')}</button>`);
   $('#view').innerHTML = `
-  <div class="tabs" role="tablist"><button data-tab="impayes" class="${payTab==='impayes'?'active':''}">Impayés</button><button data-tab="historique" class="${payTab==='historique'?'active':''}">Historique des paiements</button><button data-tab="tarifs" class="${payTab==='tarifs'?'active':''}">Grille des frais</button></div>
+  <div class="tabs" role="tablist"><button data-tab="impayes" class="${payTab==='impayes'?'active':''}">${t('Impayés')}</button><button data-tab="historique" class="${payTab==='historique'?'active':''}">${t('Historique des paiements')}</button><button data-tab="tarifs" class="${payTab==='tarifs'?'active':''}">${t('Grille des frais')}</button></div>
   <div id="pay-content"></div>`;
   $('#view .tabs').onclick = e => { const b = e.target.closest('button'); if(b){ payTab = b.dataset.tab; history.replaceState(null,'','#paiements'); viewPaiements(); } };
   const box = $('#pay-content');
@@ -637,194 +815,196 @@ function viewPaiements(){
     const list = DB.students.filter(s => !payClasse || s.classe === payClasse).map(s => ({s, f:finance(s)})).filter(x => x.f.retard > 0).sort((a,b) => b.f.du - a.f.du);
     const tot = list.reduce((a,x) => a + x.f.du, 0);
     box.innerHTML = `<div class="card">
-      <div class="toolbar space"><div class="row"><select class="input" id="pc" aria-label="Classe">${classOptions(payClasse, true)}</select><span class="muted">${list.length} élèves · <b style="color:var(--red)">${fcfa(tot)}</b> à recouvrer</span></div>
-      <button class="btn amber" data-act="relancer-tous" data-classe="${payClasse}" ${list.length?'':'disabled'}>Relancer tous par WhatsApp</button></div>
-      <div class="table-wrap"><table><thead><tr><th>Élève</th><th>Classe</th><th class="hide-sm">Parent</th><th>Mois impayés</th><th class="num">Montant dû</th><th></th></tr></thead><tbody>
-      ${list.map(x => `<tr><td><div class="who">${avatar(x.s)}<b>${esc(fullName(x.s))}</b></div></td><td>${x.s.classe}</td><td class="hide-sm">${esc(x.s.parent)}<br><small class="muted">${esc(x.s.tel)}</small></td><td>${MOIS.slice(x.f.paid, MOIS_DUS).join(', ')}</td><td class="num"><b>${fcfa(x.f.du)}</b></td><td class="right"><div class="row" style="justify-content:flex-end;flex-wrap:nowrap"><button class="btn sm" data-act="relancer" data-id="${x.s.id}">Relancer</button><button class="btn sm primary" data-act="encaisser" data-id="${x.s.id}">Encaisser</button></div></td></tr>`).join('') || `<tr><td colspan="6" class="empty">Aucun impayé 🎉</td></tr>`}
+      <div class="toolbar space"><div class="row"><select class="input" id="pc" aria-label="${t('Classe')}">${classOptions(payClasse, true)}</select><span class="muted">${t('{n} élèves · {m} à recouvrer',{n:list.length,m:`<b style="color:var(--red)">${fcfa(tot)}</b>`})}</span></div>
+      <button class="btn amber" data-act="relancer-tous" data-classe="${payClasse}" ${list.length?'':'disabled'}>${t('Relancer tous par WhatsApp')}</button></div>
+      <div class="table-wrap"><table><thead><tr><th>${t('Élève')}</th><th>${t('Classe')}</th><th class="hide-sm">${t('Parent')}</th><th>${t('Mois impayés')}</th><th class="num">${t('Montant dû')}</th><th></th></tr></thead><tbody>
+      ${list.map(x => `<tr><td><div class="who">${avatar(x.s)}<b>${esc(fullName(x.s))}</b></div></td><td>${x.s.classe}</td><td class="hide-sm">${esc(x.s.parent)}<br><small class="muted">${esc(x.s.tel)}</small></td><td>${moisList(rangeIdx(x.f.paid, MOIS_DUS))}</td><td class="num"><b>${fcfa(x.f.du)}</b></td><td class="right"><div class="row" style="justify-content:flex-end;flex-wrap:nowrap"><button class="btn sm" data-act="relancer" data-id="${x.s.id}">${t('Relancer')}</button><button class="btn sm primary" data-act="encaisser" data-id="${x.s.id}">${t('Encaisser')}</button></div></td></tr>`).join('') || `<tr><td colspan="6" class="empty">${t('Aucun impayé 🎉')}</td></tr>`}
       </tbody></table></div></div>`;
     $('#pc').onchange = e => { payClasse = e.target.value; viewPaiements(); };
   } else if(payTab === 'historique'){
     const list = [...DB.payments].sort((a,b) => b.date.localeCompare(a.date) || b.id - a.id);
     const byMode = MODES.map(m => [m, list.filter(p => p.mode === m).reduce((a,p) => a + p.montant, 0)]);
     const total = byMode.reduce((a,x) => a + x[1], 0);
-    box.innerHTML = `<div class="grid kpis" style="margin-bottom:16px">${byMode.map(([m,v]) => `<div class="card kpi"><div class="label">${m}</div><div class="value" style="font-size:20px">${fcfa(v)}</div><div class="sub">${Math.round(v/total*100)}% des encaissements</div></div>`).join('')}</div>
-    <div class="card"><div class="table-wrap"><table><thead><tr><th>N° reçu</th><th>Date</th><th>Élève</th><th>Motif</th><th>Mode</th><th class="num">Montant</th><th></th></tr></thead><tbody>
-    ${list.slice(0,80).map(p => { const s = studentById(p.studentId); return `<tr><td class="muted">R-${String(p.id).padStart(5,'0')}</td><td>${fdate(p.date)}</td><td><b>${esc(fullName(s))}</b> <span class="muted">· ${s.classe}</span></td><td>${p.motif}${p.mois.length?' – '+p.mois.map(x=>MOIS[x]).join(', '):''}</td><td>${modeBadge(p.mode)}</td><td class="num"><b>${fcfa(p.montant)}</b></td><td class="right"><button class="btn sm" data-act="recu" data-id="${p.id}">Reçu</button></td></tr>`; }).join('')}
-    </tbody></table></div><p class="muted" style="font-size:13px;margin:10px 0 0">Les 80 derniers paiements sont affichés.</p></div>`;
+    box.innerHTML = `<div class="grid kpis" style="margin-bottom:16px">${byMode.map(([m,v]) => `<div class="card kpi"><div class="label">${t(m)}</div><div class="value" style="font-size:20px">${fcfa(v)}</div><div class="sub">${t('{p}% des encaissements',{p:Math.round(v/total*100)})}</div></div>`).join('')}</div>
+    <div class="card"><div class="table-wrap"><table><thead><tr><th>${t('N° reçu')}</th><th>${t('Date')}</th><th>${t('Élève')}</th><th>${t('Motif')}</th><th>${t('Mode')}</th><th class="num">${t('Montant')}</th><th></th></tr></thead><tbody>
+    ${list.slice(0,80).map(p => { const s = studentById(p.studentId); return `<tr><td class="muted">R-${String(p.id).padStart(5,'0')}</td><td>${fdate(p.date)}</td><td><b>${esc(fullName(s))}</b> <span class="muted">· ${s.classe}</span></td><td>${motifLabel(p)}</td><td>${modeBadge(p.mode)}</td><td class="num"><b>${fcfa(p.montant)}</b></td><td class="right"><button class="btn sm" data-act="recu" data-id="${p.id}">${t('Reçu')}</button></td></tr>`; }).join('')}
+    </tbody></table></div><p class="muted" style="font-size:13px;margin:10px 0 0">${t('Les 80 derniers paiements sont affichés.')}</p></div>`;
   } else {
-    box.innerHTML = `<div class="card"><div class="table-wrap"><table><thead><tr><th>Classe</th><th>Cycle</th><th>Enseignant(e)</th><th class="num">Inscription</th><th class="num">Mensualité</th><th class="num">Total annuel</th></tr></thead><tbody>
-    ${CLASSES.map(c => `<tr><td><b>${c.id}</b></td><td>${c.cycle}</td><td>${c.prof}</td><td class="num">${fcfa(c.insc)}</td><td class="num">${fcfa(c.mens)}</td><td class="num"><b>${fcfa(c.insc + c.mens*MOIS.length)}</b></td></tr>`).join('')}
-    </tbody></table></div><p class="muted" style="font-size:13px;margin:10px 0 0">Scolarité sur ${MOIS.length} mois (octobre à juin). Dans la version finale, chaque école configure ses frais : tenue, cantine, transport, fournitures…</p></div>`;
+    box.innerHTML = `<div class="card"><div class="table-wrap"><table><thead><tr><th>${t('Classe')}</th><th>${t('Cycle')}</th><th>${t('Enseignant(e)')}</th><th class="num">${t('Inscription')}</th><th class="num">${t('Mensualité')}</th><th class="num">${t('Total annuel')}</th></tr></thead><tbody>
+    ${CLASSES.map(c => `<tr><td><b>${c.id}</b></td><td>${t(c.cycle)}</td><td>${c.prof}</td><td class="num">${fcfa(c.insc)}</td><td class="num">${fcfa(c.mens)}</td><td class="num"><b>${fcfa(c.insc + c.mens*NB_MOIS)}</b></td></tr>`).join('')}
+    </tbody></table></div><p class="muted" style="font-size:13px;margin:10px 0 0">${t('Scolarité sur {n} mois (octobre à juin). Dans la version finale, chaque école configure ses frais : tenue, cantine, transport, fournitures…',{n:NB_MOIS})}</p></div>`;
   }
 }
-const modeBadge = m => `<span class="badge ${m==='Wave'?'b-info':m==='Orange Money'?'b-warn':m==='Free Money'?'b-bad':'b-grey'}">${m}</span>`;
+const rangeIdx = (a, b) => Array.from({length:Math.max(0,b-a)}, (_,i) => a + i);
 function openEncaisser(id){
   const pre = id ? studentById(id) : null;
   const cls = pre ? pre.classe : CLASSES[0].id;
-  openModal(`<h2>Encaisser un paiement</h2><p class="muted" style="margin:0 0 14px">Le reçu est généré automatiquement et peut être envoyé au parent.</p>
+  openModal(`<h2>${t('Encaisser un paiement')}</h2><p class="muted" style="margin:0 0 14px">${t('Le reçu est généré automatiquement et peut être envoyé au parent.')}</p>
   <form class="form" id="f-pay">
-    <div class="cols"><label>Classe<select class="input" id="pay-classe">${classOptions(cls)}</select></label><label>Élève<select class="input" id="pay-eleve" name="eleve"></select></label></div>
-    <div class="cols"><label>Nombre de mois<select class="input" id="pay-nb" name="nb"></select></label><label>Mode de paiement<select class="input" name="mode">${MODES.map(m=>`<option>${m}</option>`).join('')}</select></label></div>
+    <div class="cols"><label>${t('Classe')}<select class="input" id="pay-classe">${classOptions(cls)}</select></label><label>${t('Élève')}<select class="input" id="pay-eleve" name="eleve"></select></label></div>
+    <div class="cols"><label>${t('Nombre de mois')}<select class="input" id="pay-nb" name="nb"></select></label><label>${t('Mode de paiement')}<select class="input" name="mode">${MODES.map(m=>`<option value="${m}">${t(m)}</option>`).join('')}</select></label></div>
     <div class="card" style="background:var(--green-l);border-color:var(--tint-border)"><div class="row space"><span id="pay-detail" class="muted"></span><b id="pay-total" style="font-size:20px"></b></div></div>
-    <div class="actions"><button type="button" class="btn" data-act="close">Annuler</button><button class="btn primary" id="pay-ok">Valider et générer le reçu</button></div>
+    <div class="actions"><button type="button" class="btn" data-act="close">${t('Annuler')}</button><button class="btn primary" id="pay-ok">${t('Valider et générer le reçu')}</button></div>
   </form>`);
-  const fillStudents = (sel) => { const c = $('#pay-classe').value; $('#pay-eleve').innerHTML = DB.students.filter(s => s.classe === c).sort((a,b)=>a.nom.localeCompare(b.nom)).map(s => { const f = finance(s); return `<option value="${s.id}" ${s.id===sel?'selected':''}>${esc(s.nom)} ${esc(s.prenom)}${f.retard?` – ${f.retard} mois de retard`:''}</option>`; }).join(''); fillNb(); };
-  const fillNb = () => { const s = studentById($('#pay-eleve').value); const f = finance(s); const left = MOIS.length - f.paid; const def = Math.max(1, f.retard);
-    $('#pay-nb').innerHTML = left ? Array.from({length:Math.min(left,9)},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===def?'selected':''}>${n} mois</option>`).join('') : `<option value="0">Année soldée</option>`; upd(); };
-  const upd = () => { const s = studentById($('#pay-eleve').value), f = finance(s), n = +$('#pay-nb').value;
-    $('#pay-detail').textContent = n ? 'Mensualités : ' + MOIS.slice(f.paid, f.paid+n).join(', ') : 'Toute l\'année est déjà payée.';
+  const fillStudents = sel => { const c = $('#pay-classe').value; $('#pay-eleve').innerHTML = DB.students.filter(s => s.classe === c).sort((a,b)=>a.nom.localeCompare(b.nom)).map(s => { const f = finance(s); return `<option value="${s.id}" ${s.id===sel?'selected':''}>${esc(s.nom)} ${esc(s.prenom)}${f.retard?' – '+t('{n} mois de retard',{n:f.retard}):''}</option>`; }).join(''); fillNb(); };
+  const fillNb = () => { const f = finance(studentById($('#pay-eleve').value)); const left = NB_MOIS - f.paid; const def = Math.max(1, f.retard);
+    $('#pay-nb').innerHTML = left ? Array.from({length:left},(_,i)=>i+1).map(n=>`<option value="${n}" ${n===def?'selected':''}>${t('{n} mois',{n})}</option>`).join('') : `<option value="0">${t('Année soldée')}</option>`; upd(); };
+  const upd = () => { const f = finance(studentById($('#pay-eleve').value)), n = +$('#pay-nb').value;
+    $('#pay-detail').textContent = n ? t('Mensualités : {m}',{m:moisList(rangeIdx(f.paid, f.paid+n))}) : t("Toute l'année est déjà payée.");
     $('#pay-total').textContent = fcfa(n * f.mens); $('#pay-ok').disabled = !n; };
   $('#pay-classe').onchange = () => fillStudents(); $('#pay-eleve').onchange = fillNb; $('#pay-nb').onchange = upd;
   fillStudents(pre ? pre.id : null);
   $('#f-pay').onsubmit = e => {
     e.preventDefault();
-    const s = studentById($('#pay-eleve').value), f = finance(s), n = +$('#pay-nb').value;
+    const s = studentById($('#pay-eleve').value), n = +$('#pay-nb').value;
     const p = recordPayment(s, n, new FormData(e.target).get('mode'));
-    showReceipt(p, `Paiement de ${fcfa(p.montant)} enregistré pour ${fullName(s)}.`);
+    showReceipt(p, t('Paiement de {m} enregistré pour {n}.',{m:fcfa(p.montant),n:fullName(s)}));
   };
 }
 function recordPayment(s, n, mode){
   const f = finance(s), c = classOf(s.classe);
-  const p = {id:DB.nextPid++, studentId:s.id, motif:'Mensualité', mois:Array.from({length:n},(_,i)=>f.paid+i), montant:n*c.mens, mode, date:todayISO()};
+  const p = {id:DB.nextPid++, studentId:s.id, motif:'Mensualité', mois:rangeIdx(f.paid, f.paid+n), montant:n*c.mens, mode, date:todayISO()};
   DB.payments.push(p); save(); route(); return p;
 }
 function receiptHTML(p){
-  const s = studentById(p.studentId);
+  const s = studentById(p.studentId), after = finance(s);
   return `<div class="doc printable">
-    <div class="doc-head"><div><b>${SCHOOL.nom}</b><small>${SCHOOL.ville} · Tél. ${SCHOOL.tel}</small></div><div class="right"><b>Reçu N° R-${String(p.id).padStart(5,'0')}</b><small>${fdate(p.date)}</small></div></div>
-    <h4>Reçu de paiement</h4>
+    <div class="doc-head"><div><b>${SCHOOL.nom}</b><small>${SCHOOL.ville} · ${t('Tél.')} ${SCHOOL.tel}</small></div><div class="right"><b>${t('Reçu N° {n}',{n:'R-'+String(p.id).padStart(5,'0')})}</b><small>${fdate(p.date)}</small></div></div>
+    <h4>${t('Reçu de paiement')}</h4>
     <table><tbody>
-      <tr><td class="muted">Élève</td><td><b>${esc(fullName(s))}</b> · Matricule ${String(s.id).padStart(4,'0')}</td></tr>
-      <tr><td class="muted">Classe</td><td>${s.classe} · Année ${SCHOOL.annee}</td></tr>
-      <tr><td class="muted">Parent / tuteur</td><td>${esc(s.parent)}</td></tr>
-      <tr><td class="muted">Motif</td><td>${p.motif}${p.mois.length?' – '+p.mois.map(x=>MOIS[x]).join(', '):''}</td></tr>
-      <tr><td class="muted">Mode de paiement</td><td>${p.mode}${p.mode!=='Espèces'?' · Réf. '+(p.mode==='Wave'?'WV':'OM')+String(p.id*7919).padStart(8,'0'):''}</td></tr>
-      <tr class="total"><td>Montant payé</td><td>${fcfa(p.montant)}</td></tr>
+      <tr><td class="muted">${t('Élève')}</td><td><b>${esc(fullName(s))}</b> · ${t('Matricule {n}',{n:matricule(s)})}</td></tr>
+      <tr><td class="muted">${t('Classe')}</td><td>${s.classe} · ${t('Année {a}',{a:SCHOOL.annee})}</td></tr>
+      <tr><td class="muted">${t('Parent / tuteur')}</td><td>${esc(s.parent)}</td></tr>
+      <tr><td class="muted">${t('Motif')}</td><td>${motifLabel(p)}</td></tr>
+      <tr><td class="muted">${t('Mode de paiement')}</td><td>${t(p.mode)}${p.mode!=='Espèces'?' · '+t('Réf.')+' '+(p.mode==='Wave'?'WV':'OM')+String(p.id*7919).padStart(8,'0'):''}</td></tr>
+      <tr class="total"><td>${t('Montant payé')}</td><td>${fcfa(p.montant)}</td></tr>
     </tbody></table>
-    <div class="sign"><span>Situation après paiement : ${finance(s).retard ? finance(s).retard+' mois restant(s) dû(s)' : 'à jour'}</span><span class="stamp">PAYÉ</span></div>
+    <div class="sign"><span>${after.retard ? t('Situation après paiement : {n} mois restant(s) dû(s)',{n:after.retard}) : t('Situation après paiement : à jour')}</span><span class="stamp">${t('PAYÉ')}</span></div>
   </div>`;
 }
 function showReceipt(p, msg){
   toast(msg);
-  openModal(`<h2>Reçu de paiement</h2>${receiptHTML(p)}
-  <div class="actions"><button class="btn" onclick="window.print()">🖨️ Imprimer</button><button class="btn" data-act="wa-recu" data-id="${p.id}">Envoyer au parent par WhatsApp</button><button class="btn primary" data-act="close">Terminé</button></div>`);
+  openModal(`<h2>${t('Reçu de paiement')}</h2>${receiptHTML(p)}
+  <div class="actions"><button class="btn" data-act="print">🖨️ ${t('Imprimer')}</button><button class="btn" data-act="wa-recu" data-id="${p.id}">${t('Envoyer au parent par WhatsApp')}</button><button class="btn primary" data-act="close">${t('Terminé')}</button></div>`);
 }
-function relanceText(s){ const f = finance(s); return `Bonjour ${s.parent}, ${SCHOOL.nom} vous rappelle que la scolarité de ${fullName(s)} (${s.classe}) présente un retard de ${f.retard} mois (${MOIS.slice(f.paid, MOIS_DUS).join(', ')}), soit ${fcfa(f.du)}. Vous pouvez payer par Wave ou Orange Money depuis votre espace parent. Merci.`; }
+function relanceText(s){ const f = finance(s); return t('Bonjour {parent}, {ecole} vous rappelle que la scolarité de {eleve} ({classe}) présente un retard de {n} mois ({mois}), soit {montant}. Vous pouvez payer par Wave ou Orange Money depuis votre espace parent. Merci.',
+  {parent:s.parent, ecole:SCHOOL.nom, eleve:fullName(s), classe:s.classe, n:f.retard, mois:moisList(rangeIdx(f.paid, MOIS_DUS)), montant:fcfa(f.du)}); }
 function openRelance(id){
   const s = studentById(id);
-  openModal(`<h2>Relancer le parent</h2><p class="muted" style="margin:0 0 14px">${esc(s.parent)} · ${esc(s.tel)}</p>
-  <form class="form" id="f-rel"><label>Canal<select class="input" name="canal"><option>WhatsApp</option><option>SMS</option></select></label>
-  <label>Message<textarea class="input" name="texte">${esc(relanceText(s))}</textarea></label>
-  <div class="actions"><button type="button" class="btn" data-act="close">Annuler</button><button class="btn primary">Envoyer la relance</button></div></form>`);
+  openModal(`<h2>${t('Relancer le parent')}</h2><p class="muted" style="margin:0 0 14px">${esc(s.parent)} · ${esc(s.tel)}</p>
+  <form class="form" id="f-rel"><label>${t('Canal')}<select class="input" name="canal"><option>WhatsApp</option><option>SMS</option></select></label>
+  <label>${t('Message')}<textarea class="input" name="texte">${esc(relanceText(s))}</textarea></label>
+  <div class="actions"><button type="button" class="btn" data-act="close">${t('Annuler')}</button><button class="btn primary">${t('Envoyer la relance')}</button></div></form>`);
   $('#f-rel').onsubmit = e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
-    DB.messages.unshift({date:todayISO(), canal:d.canal, dest:s.parent, nb:1, texte:d.texte, auto:false, type:'Relance'}); save(); closeModal(); toast(`Relance envoyée par ${d.canal} à ${s.parent} (simulation)`); };
+    DB.messages.unshift({date:todayISO(), canal:d.canal, scope:'parent', name:s.parent, nb:1, texte:d.texte, auto:false, type:'Relance'}); save(); closeModal(); toast(t('Relance envoyée par {c} à {p} (simulation)',{c:d.canal,p:s.parent})); };
 }
 function relancerTous(cls){
   const list = DB.students.filter(s => (!cls || s.classe === cls) && finance(s).retard > 0);
   if(!list.length) return;
-  if(!confirm(`Envoyer un rappel WhatsApp personnalisé aux ${list.length} parents concernés ?`)) return;
-  DB.messages.unshift({date:todayISO(), canal:'WhatsApp', dest:`Parents en retard${cls?' ('+cls+')':''}`, nb:list.length, texte:'Rappel personnalisé de scolarité (montant et mois impayés propres à chaque élève).', auto:true, type:'Relance'});
-  save(); toast(`${list.length} rappels WhatsApp envoyés (simulation)`); if(location.hash.startsWith('#messages')) route();
+  if(!confirm(t('Envoyer un rappel WhatsApp personnalisé aux {n} parents concernés ?',{n:list.length}))) return;
+  DB.messages.unshift({date:todayISO(), canal:'WhatsApp', scope:'late', cls, nb:list.length, key:'relanceGroupe', auto:true, type:'Relance'});
+  save(); toast(t('{n} rappels WhatsApp envoyés (simulation)',{n:list.length})); if(location.hash.startsWith('#messages')) route();
 }
 
 /* ============ Notes & bulletins ============ */
 let notesState = {tab:'saisie', classe:'CM2', matiere:null};
 function viewNotes(){
-  setHeader('Notes & bulletins', '1er trimestre · Composition', '');
+  setHeader(t('Notes & bulletins'), t('1er trimestre · Composition'), '');
   const subs = subjects(notesState.classe);
   if(!subs.find(x => x[0] === notesState.matiere)) notesState.matiere = subs[0][0];
   $('#view').innerHTML = `
-  <div class="tabs"><button data-tab="saisie" class="${notesState.tab==='saisie'?'active':''}">Saisie des notes</button><button data-tab="resultats" class="${notesState.tab==='resultats'?'active':''}">Résultats & bulletins</button></div>
+  <div class="tabs"><button data-tab="saisie" class="${notesState.tab==='saisie'?'active':''}">${t('Saisie des notes')}</button><button data-tab="resultats" class="${notesState.tab==='resultats'?'active':''}">${t('Résultats & bulletins')}</button></div>
   <div class="card"><div class="toolbar">
-    <label class="row">Classe <select class="input" id="n-classe">${classOptions(notesState.classe)}</select></label>
-    ${notesState.tab==='saisie' ? `<label class="row">Matière <select class="input" id="n-mat">${subs.map(([m,c]) => `<option ${m===notesState.matiere?'selected':''} value="${esc(m)}">${esc(m)} (coef. ${c})</option>`).join('')}</select></label>` : ''}
-    <span class="muted">Enseignant(e) : ${classOf(notesState.classe).prof}</span>
+    <label class="row">${t('Classe')} <select class="input" id="n-classe">${classOptions(notesState.classe)}</select></label>
+    ${notesState.tab==='saisie' ? `<label class="row">${t('Matière')} <select class="input" id="n-mat">${subs.map(([m,c]) => `<option ${m===notesState.matiere?'selected':''} value="${esc(m)}">${esc(t('{m} (coef. {c})',{m:t(m),c}))}</option>`).join('')}</select></label>` : ''}
+    <span class="muted">${t('Enseignant(e) : {p}',{p:classOf(notesState.classe).prof})}</span>
   </div><div id="n-content"></div></div>`;
   $('#view .tabs').onclick = e => { const b = e.target.closest('button'); if(b){ notesState.tab = b.dataset.tab; viewNotes(); } };
   $('#n-classe').onchange = e => { notesState.classe = e.target.value; viewNotes(); };
   if(notesState.tab === 'saisie'){
     $('#n-mat').onchange = e => { notesState.matiere = e.target.value; viewNotes(); };
     const list = DB.students.filter(s => s.classe === notesState.classe).sort((a,b) => a.nom.localeCompare(b.nom));
-    $('#n-content').innerHTML = `<form id="f-notes"><div class="table-wrap"><table><thead><tr><th>#</th><th>Élève</th><th class="num">Note / 20</th><th class="hide-sm">Appréciation</th></tr></thead><tbody>
-      ${list.map((s,i) => { const v = DB.grades[s.id]?.[notesState.matiere]; return `<tr><td class="muted">${i+1}</td><td><div class="who">${avatar(s)}<b>${esc(s.nom)} ${esc(s.prenom)}</b></div></td><td class="num"><input class="input note-input" type="number" min="0" max="20" step="0.25" name="${s.id}" value="${v ?? ''}" aria-label="Note de ${esc(fullName(s))}"></td><td class="hide-sm muted" data-app="${s.id}">${v!=null&&v!==''?appreciation(v):''}</td></tr>`; }).join('')}
+    $('#n-content').innerHTML = `<form id="f-notes"><div class="table-wrap"><table><thead><tr><th>#</th><th>${t('Élève')}</th><th class="num">${t('Note / 20')}</th><th class="hide-sm">${t('Appréciation')}</th></tr></thead><tbody>
+      ${list.map((s,i) => { const v = DB.grades[s.id]?.[notesState.matiere]; return `<tr><td class="muted">${i+1}</td><td><div class="who">${avatar(s)}<b>${esc(s.nom)} ${esc(s.prenom)}</b></div></td><td class="num"><input class="input note-input" type="number" min="0" max="20" step="0.25" name="${s.id}" value="${v ?? ''}" aria-label="${esc(t('Note de {n}',{n:fullName(s)}))}"></td><td class="hide-sm muted" data-app="${s.id}">${v!=null&&v!==''?appreciation(v):''}</td></tr>`; }).join('')}
     </tbody></table></div>
-    <div class="row space" style="margin-top:14px"><span class="muted" id="n-moy"></span><button class="btn primary">Enregistrer les notes</button></div></form>`;
-    const moy = () => { const vals = [...document.querySelectorAll('.note-input')].map(i => i.value).filter(v => v !== '').map(Number); $('#n-moy').textContent = vals.length ? `Moyenne de la classe : ${(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2)} · ${vals.length}/${list.length} notes saisies` : ''; };
+    <div class="row space" style="margin-top:14px"><span class="muted" id="n-moy"></span><button class="btn primary">${t('Enregistrer les notes')}</button></div></form>`;
+    const moy = () => { const vals = [...document.querySelectorAll('.note-input')].map(i => i.value).filter(v => v !== '').map(Number); $('#n-moy').textContent = vals.length ? t('Moyenne de la classe : {m} · {n}/{t} notes saisies',{m:(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2),n:vals.length,t:list.length}) : ''; };
     $('#f-notes').oninput = e => { if(e.target.name){ const c = document.querySelector(`[data-app="${e.target.name}"]`); if(c) c.textContent = e.target.value!=='' ? appreciation(+e.target.value) : ''; } moy(); };
     moy();
     $('#f-notes').onsubmit = e => { e.preventDefault(); let bad = 0;
       document.querySelectorAll('.note-input').forEach(i => { const sid = i.name; DB.grades[sid] = DB.grades[sid] || {};
         if(i.value === ''){ delete DB.grades[sid][notesState.matiere]; return; }
         const v = +i.value; if(v < 0 || v > 20 || isNaN(v)){ bad++; return; } DB.grades[sid][notesState.matiere] = v; });
-      save(); toast(bad ? `${bad} note(s) invalide(s) ignorée(s)` : `Notes de ${notesState.matiere} enregistrées pour la classe de ${notesState.classe}`); };
+      save(); toast(bad ? t('{n} note(s) invalide(s) ignorée(s)',{n:bad}) : t('Notes de {m} enregistrées pour la classe de {c}',{m:t(notesState.matiere),c:notesState.classe})); };
   } else {
     const rk = ranking(notesState.classe);
     const avgClass = rk.length ? rk.reduce((a,x)=>a+x.moy,0)/rk.length : 0;
     const admis = rk.filter(x => x.moy >= 10).length;
     $('#n-content').innerHTML = `<div class="grid kpis" style="margin-bottom:14px">
-        <div class="card kpi"><div class="label">Moyenne de la classe</div><div class="value" style="font-size:22px">${avgClass.toFixed(2)}</div></div>
-        <div class="card kpi ok"><div class="label">Moyenne ≥ 10</div><div class="value" style="font-size:22px">${admis} / ${rk.length}</div><div class="sub">${rk.length?Math.round(admis/rk.length*100):0}% de réussite</div></div>
-        <div class="card kpi"><div class="label">Premier(e) de la classe</div><div class="value" style="font-size:17px">${rk[0]?esc(fullName(rk[0].s)):'—'}</div><div class="sub">${rk[0]?rk[0].moy.toFixed(2)+' / 20':''}</div></div>
+        <div class="card kpi"><div class="label">${t('Moyenne de la classe')}</div><div class="value" style="font-size:22px">${avgClass.toFixed(2)}</div></div>
+        <div class="card kpi ok"><div class="label">${t('Moyenne ≥ 10')}</div><div class="value" style="font-size:22px">${admis} / ${rk.length}</div><div class="sub">${t('{p}% de réussite',{p:rk.length?Math.round(admis/rk.length*100):0})}</div></div>
+        <div class="card kpi"><div class="label">${t('Premier(e) de la classe')}</div><div class="value" style="font-size:17px">${rk[0]?esc(fullName(rk[0].s)):'—'}</div><div class="sub">${rk[0]?rk[0].moy.toFixed(2)+' / 20':''}</div></div>
       </div>
-      <div class="table-wrap"><table><thead><tr><th>Rang</th><th>Élève</th><th class="num">Moyenne</th><th class="hide-sm">Appréciation</th><th class="hide-sm">Distinction</th><th></th></tr></thead><tbody>
-      ${rk.map(x => `<tr><td><b>${rankLabel(x.rang)}</b></td><td><div class="who">${avatar(x.s)}<b>${esc(fullName(x.s))}</b></div></td><td class="num"><b>${x.moy.toFixed(2)}</b></td><td class="hide-sm">${appreciation(x.moy)}</td><td class="hide-sm">${distinctionBadge(x.moy)}</td><td class="right"><button class="btn sm" data-act="bulletin" data-id="${x.s.id}">Bulletin</button></td></tr>`).join('')}
+      <div class="table-wrap"><table><thead><tr><th>${t('Rang')}</th><th>${t('Élève')}</th><th class="num">${t('Moyenne')}</th><th class="hide-sm">${t('Appréciation')}</th><th class="hide-sm">${t('Distinction')}</th><th></th></tr></thead><tbody>
+      ${rk.map(x => `<tr><td><b>${rankLabel(x.rang)}</b></td><td><div class="who">${avatar(x.s)}<b>${esc(fullName(x.s))}</b></div></td><td class="num"><b>${x.moy.toFixed(2)}</b></td><td class="hide-sm">${appreciation(x.moy)}</td><td class="hide-sm">${distinctionBadge(x.moy)}</td><td class="right"><button class="btn sm" data-act="bulletin" data-id="${x.s.id}">${t('Bulletin')}</button></td></tr>`).join('')}
       </tbody></table></div>`;
   }
 }
-const distinctionBadge = m => { const d = distinction(m); return d === '—' ? '<span class="muted">—</span>' : `<span class="badge ${m<8?'b-bad':m>=14?'b-ok':'b-info'}">${d}</span>`; };
+const distinctionBadge = m => distinctionKey(m) === '—' ? '<span class="muted">—</span>' : `<span class="badge ${m<8?'b-bad':m>=14?'b-ok':'b-info'}">${distinction(m)}</span>`;
 function bulletinHTML(sid){
   const s = studentById(sid), c = classOf(s.classe), g = DB.grades[sid] || {}, rk = ranking(s.classe), me = rk.find(x => x.s.id === s.id);
-  const subs = subjects(s.classe);
   let tc = 0, tp = 0;
-  const rows = subs.map(([m,coef]) => { const n = g[m]; const has = n != null && n !== ''; if(has){ tc += coef; tp += n*coef; }
-    const classAvg = (() => { const v = DB.students.filter(x => x.classe === s.classe).map(x => DB.grades[x.id]?.[m]).filter(v => v != null && v !== ''); return v.length ? (v.reduce((a,b)=>a+b,0)/v.length).toFixed(2) : '—'; })();
-    return `<tr><td>${esc(m)}</td><td class="num">${coef}</td><td class="num">${has?n.toFixed(2):'—'}</td><td class="num">${has?(n*coef).toFixed(2):'—'}</td><td class="num muted">${classAvg}</td><td>${has?appreciation(n):''}</td></tr>`; }).join('');
+  const rows = subjects(s.classe).map(([m,coef]) => { const n = g[m]; const has = n != null && n !== ''; if(has){ tc += coef; tp += n*coef; }
+    const vals = DB.students.filter(x => x.classe === s.classe).map(x => DB.grades[x.id]?.[m]).filter(v => v != null && v !== '');
+    const classAvg = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) : '—';
+    return `<tr><td>${esc(t(m))}</td><td class="num">${coef}</td><td class="num">${has?n.toFixed(2):'—'}</td><td class="num">${has?(n*coef).toFixed(2):'—'}</td><td class="num muted">${classAvg}</td><td>${has?appreciation(n):''}</td></tr>`; }).join('');
   const moy = tc ? tp/tc : null;
   const abs = DB.absences.filter(a => a.studentId === s.id);
+  const nAbs = abs.filter(a=>a.type==='Absence');
   return `<div class="doc printable">
-    <div class="doc-head"><div><small>République du Sénégal · Un Peuple – Un But – Une Foi</small><b>${SCHOOL.nom}</b><small>${SCHOOL.ville}</small></div><div class="right"><b>Année ${SCHOOL.annee}</b><small>1er trimestre</small></div></div>
-    <h4>Bulletin de notes</h4>
-    <div class="row space" style="margin-bottom:12px;font-size:14px"><span>Élève : <b>${esc(fullName(s))}</b><br>Né(e) le ${fdate(s.naissance)} · Matricule ${String(s.id).padStart(4,'0')}</span><span class="right">Classe : <b>${s.classe}</b> (${rk.length} élèves)<br>Enseignant(e) : ${c.prof}</span></div>
-    <div class="table-wrap"><table><thead><tr><th>Matière</th><th class="num">Coef.</th><th class="num">Note /20</th><th class="num">Note × coef.</th><th class="num">Moy. classe</th><th>Appréciation</th></tr></thead><tbody>${rows}
-      <tr class="total"><td>Total</td><td class="num">${tc}</td><td></td><td class="num">${tp.toFixed(2)}</td><td></td><td></td></tr></tbody></table></div>
+    <div class="doc-head"><div><small>${t('République du Sénégal · Un Peuple – Un But – Une Foi')}</small><b>${SCHOOL.nom}</b><small>${SCHOOL.ville}</small></div><div class="right"><b>${t('Année {a}',{a:SCHOOL.annee})}</b><small>${t('1er trimestre')}</small></div></div>
+    <h4>${t('Bulletin de notes')}</h4>
+    <div class="row space" style="margin-bottom:12px;font-size:14px"><span>${t('Élève : ')}<b>${esc(fullName(s))}</b><br>${t('Né(e) le {d} · Matricule {n}',{d:fdate(s.naissance),n:matricule(s)})}</span><span class="right">${t('Classe : ')}<b>${s.classe}</b> ${t('({n} élèves)',{n:rk.length})}<br>${t('Enseignant(e) : {p}',{p:c.prof})}</span></div>
+    <div class="table-wrap"><table><thead><tr><th>${t('Matière')}</th><th class="num">${t('Coef.')}</th><th class="num">${t('Note /20')}</th><th class="num">${t('Note × coef.')}</th><th class="num">${t('Moy. classe')}</th><th>${t('Appréciation')}</th></tr></thead><tbody>${rows}
+      <tr class="total"><td>${t('Total')}</td><td class="num">${tc}</td><td></td><td class="num">${tp.toFixed(2)}</td><td></td><td></td></tr></tbody></table></div>
     <table style="margin-top:12px"><tbody>
-      <tr class="total"><td>Moyenne trimestrielle</td><td><b style="font-size:17px">${moy!=null?moy.toFixed(2):'—'} / 20</b></td><td>Rang</td><td><b>${me?rankLabel(me.rang):'—'} / ${rk.length}</b></td></tr>
-      <tr><td>Appréciation</td><td>${moy!=null?appreciation(moy):''}</td><td>Distinction</td><td>${moy!=null?distinction(moy):''}</td></tr>
-      <tr><td>Absences</td><td>${abs.filter(a=>a.type==='Absence').length} (dont ${abs.filter(a=>a.type==='Absence'&&a.justifie).length} justifiée(s))</td><td>Retards</td><td>${abs.filter(a=>a.type==='Retard').length}</td></tr>
+      <tr class="total"><td>${t('Moyenne trimestrielle')}</td><td><b style="font-size:17px">${moy!=null?moy.toFixed(2):'—'} / 20</b></td><td>${t('Rang')}</td><td><b>${me?rankLabel(me.rang):'—'} / ${rk.length}</b></td></tr>
+      <tr><td>${t('Appréciation')}</td><td>${moy!=null?appreciation(moy):''}</td><td>${t('Distinction')}</td><td>${moy!=null?distinction(moy):''}</td></tr>
+      <tr><td>${t('Absences')}</td><td>${t('{n} (dont {j} justifiée(s))',{n:nAbs.length,j:nAbs.filter(a=>a.justifie).length})}</td><td>${t('Retards')}</td><td>${abs.filter(a=>a.type==='Retard').length}</td></tr>
     </tbody></table>
-    <div class="sign"><span>Signature du parent</span><span>Le Directeur</span></div>
+    <div class="sign"><span>${t('Signature du parent')}</span><span>${t('Le Directeur')}</span></div>
   </div>`;
 }
 function openBulletin(sid){
   const s = studentById(sid);
-  openModal(`<h2>Bulletin – ${esc(fullName(s))}</h2>${bulletinHTML(sid)}
-  <div class="actions"><button class="btn" onclick="window.print()">🖨️ Imprimer / PDF</button><button class="btn" data-act="wa-bulletin" data-id="${s.id}">Envoyer au parent par WhatsApp</button><button class="btn primary" data-act="close">Fermer</button></div>`, true);
+  openModal(`<h2>${esc(t('Bulletin – {n}',{n:fullName(s)}))}</h2>${bulletinHTML(sid)}
+  <div class="actions"><button class="btn" data-act="print">🖨️ ${t('Imprimer / PDF')}</button><button class="btn" data-act="wa-bulletin" data-id="${s.id}">${t('Envoyer au parent par WhatsApp')}</button><button class="btn primary" data-act="close">${t('Fermer')}</button></div>`, true);
 }
 
 /* ============ Appel & absences ============ */
 let absClasse = 'CE1';
 function viewAbsences(){
-  setHeader('Appel & absences', 'Les parents sont prévenus automatiquement en cas d\'absence ou de retard', '');
+  setHeader(t('Appel & absences'), t("Les parents sont prévenus automatiquement en cas d'absence ou de retard"), '');
   const list = DB.students.filter(s => s.classe === absClasse).sort((a,b) => a.nom.localeCompare(b.nom));
   const today = todayISO();
   const recent = [...DB.absences].sort((a,b) => b.date.localeCompare(a.date)).slice(0,12);
   $('#view').innerHTML = `<div class="grid two">
-  <div class="card"><h3>Faire l'appel</h3>
-    <div class="toolbar"><select class="input" id="a-classe" aria-label="Classe">${classOptions(absClasse)}</select><input class="input" type="date" id="a-date" value="${today}" aria-label="Date"><button class="btn sm" type="button" id="a-all">Tous présents</button></div>
+  <div class="card"><h3>${t("Faire l'appel")}</h3>
+    <div class="toolbar"><select class="input" id="a-classe" aria-label="${t('Classe')}">${classOptions(absClasse)}</select><input class="input" type="date" id="a-date" value="${today}" aria-label="${t('Date')}"><button class="btn sm" type="button" id="a-all">${t('Tous présents')}</button></div>
     <form id="f-appel"><div class="table-wrap"><table><tbody>
       ${list.map(s => { const ex = DB.absences.find(a => a.studentId === s.id && a.date === today); const st = ex ? (ex.type==='Absence'?'a':'r') : 'p';
         return `<tr><td><div class="who">${avatar(s)}<b>${esc(s.nom)} ${esc(s.prenom)}</b></div></td><td class="right"><div class="seg" role="radiogroup" aria-label="${esc(fullName(s))}">
-        <label><input type="radio" name="s${s.id}" value="p" ${st==='p'?'checked':''}><span class="p">Présent</span></label>
-        <label><input type="radio" name="s${s.id}" value="a" ${st==='a'?'checked':''}><span class="a">Absent</span></label>
-        <label><input type="radio" name="s${s.id}" value="r" ${st==='r'?'checked':''}><span class="r">Retard</span></label></div></td></tr>`; }).join('')}
+        <label><input type="radio" name="s${s.id}" value="p" ${st==='p'?'checked':''}><span class="p">${t('Présent')}</span></label>
+        <label><input type="radio" name="s${s.id}" value="a" ${st==='a'?'checked':''}><span class="a">${t('Absent')}</span></label>
+        <label><input type="radio" name="s${s.id}" value="r" ${st==='r'?'checked':''}><span class="r">${t('Retard')}</span></label></div></td></tr>`; }).join('')}
     </tbody></table></div>
-    <label class="row" style="margin-top:12px;font-size:14px"><input type="checkbox" id="a-notif" checked> Prévenir les parents par SMS / WhatsApp</label>
-    <div class="row space" style="margin-top:12px"><span class="muted" id="a-count"></span><button class="btn primary">Valider l'appel</button></div></form>
+    <label class="row" style="margin-top:12px;font-size:14px"><input type="checkbox" id="a-notif" checked> ${t('Prévenir les parents par SMS / WhatsApp')}</label>
+    <div class="row space" style="margin-top:12px"><span class="muted" id="a-count"></span><button class="btn primary">${t("Valider l'appel")}</button></div></form>
   </div>
-  <div class="card"><h3>Absences récentes</h3>
-    ${recent.map(a => { const s = studentById(a.studentId); return `<div class="list-item"><div><b>${esc(fullName(s))}</b> <span class="muted">· ${s.classe}</span><br><small class="muted">${fdate(a.date)}</small></div><div class="row"><span class="badge ${a.type==='Absence'?'b-bad':'b-warn'}">${a.type}</span>${a.justifie?'<span class="badge b-ok">Justifiée</span>':''}</div></div>`; }).join('')}
+  <div class="card"><h3>${t('Absences récentes')}</h3>
+    ${recent.map(a => { const s = studentById(a.studentId); return `<div class="list-item"><div><b>${esc(fullName(s))}</b> <span class="muted">· ${s.classe}</span><br><small class="muted">${fdate(a.date)}</small></div><div class="row"><span class="badge ${a.type==='Absence'?'b-bad':'b-warn'}">${t(a.type)}</span>${a.justifie?`<span class="badge b-ok">${t('Justifiée')}</span>`:''}</div></div>`; }).join('')}
   </div></div>`;
-  const count = () => { const v = [...document.querySelectorAll('#f-appel input[type=radio]:checked')].map(i => i.value); $('#a-count').textContent = `${v.filter(x=>x==='p').length} présents · ${v.filter(x=>x==='a').length} absents · ${v.filter(x=>x==='r').length} retards`; };
+  const count = () => { const v = [...document.querySelectorAll('#f-appel input[type=radio]:checked')].map(i => i.value); $('#a-count').textContent = t('{p} présents · {a} absents · {r} retards',{p:v.filter(x=>x==='p').length,a:v.filter(x=>x==='a').length,r:v.filter(x=>x==='r').length}); };
   $('#f-appel').onchange = count; count();
   $('#a-classe').onchange = e => { absClasse = e.target.value; viewAbsences(); };
   $('#a-all').onclick = () => { document.querySelectorAll('#f-appel input[value=p]').forEach(i => i.checked = true); count(); };
@@ -832,95 +1012,95 @@ function viewAbsences(){
     list.forEach(s => { const v = document.querySelector(`input[name=s${s.id}]:checked`).value;
       DB.absences = DB.absences.filter(a => !(a.studentId === s.id && a.date === date));
       if(v !== 'p'){ nb++; DB.absences.push({studentId:s.id, date, type:v==='a'?'Absence':'Retard', justifie:false}); } });
-    if(nb && $('#a-notif').checked) DB.messages.unshift({date, canal:'SMS', dest:`Parents (${absClasse})`, nb, texte:`Notification automatique : absence ou retard de votre enfant le ${fdate(date)}.`, auto:true, type:'Absence'});
-    save(); toast(nb ? `Appel enregistré · ${nb} parent(s) prévenu(s) (simulation)` : 'Appel enregistré · tous présents'); viewAbsences(); };
+    if(nb && $('#a-notif').checked) DB.messages.unshift({date, canal:'SMS', scope:'absence', cls:absClasse, nb, key:'absenceAuto', ref:date, auto:true, type:'Absence'});
+    save(); toast(nb ? t('Appel enregistré · {n} parent(s) prévenu(s) (simulation)',{n:nb}) : t('Appel enregistré · tous présents')); viewAbsences(); };
 }
 
 /* ============ Communication ============ */
 const MODELES = {
-  'Réunion de parents':'Chers parents, une réunion se tiendra le samedi [date] à 10h à l\'école. Ordre du jour : résultats du trimestre et vie scolaire. Votre présence est importante.',
-  'Congé / fermeture':'Chers parents, l\'école sera fermée du [date] au [date]. Reprise des cours le [date] à 8h. Bonnes fêtes à toutes les familles.',
+  'Réunion de parents':"Chers parents, une réunion se tiendra le samedi [date] à 10h à l'école. Ordre du jour : résultats du trimestre et vie scolaire. Votre présence est importante.",
+  'Congé / fermeture':"Chers parents, l'école sera fermée du [date] au [date]. Reprise des cours le [date] à 8h. Bonnes fêtes à toutes les familles.",
   'Rappel de scolarité':'Chers parents, nous vous rappelons que la mensualité du mois est payable avant le 10. Paiement possible par Wave, Orange Money ou au secrétariat.',
   'Résultats disponibles':'Chers parents, les bulletins du 1er trimestre sont disponibles dans votre espace parent et seront remis lors de la réunion.',
 };
 function viewMessages(){
-  setHeader('Communication', 'Annonces aux parents par WhatsApp ou SMS', '');
+  setHeader(t('Communication'), t('Annonces aux parents par WhatsApp ou SMS'), '');
   $('#view').innerHTML = `<div class="grid two">
-  <div class="card"><h3>Nouvelle annonce</h3>
+  <div class="card"><h3>${t('Nouvelle annonce')}</h3>
     <form class="form" id="f-msg">
-      <div class="cols"><label>Destinataires<select class="input" name="dest"><option value="">Toute l'école (${DB.students.length} familles)</option>${CLASSES.map(c => `<option value="${c.id}">Parents de ${c.id}</option>`).join('')}</select></label>
-      <label>Canal<select class="input" name="canal"><option>WhatsApp</option><option>SMS</option><option>WhatsApp + SMS</option></select></label></div>
-      <label>Modèle<select class="input" id="m-tpl"><option value="">— Choisir un modèle —</option>${Object.keys(MODELES).map(k => `<option>${k}</option>`).join('')}</select></label>
-      <label>Message<textarea class="input" name="texte" id="m-texte" required maxlength="640" placeholder="Écrivez votre message…"></textarea></label>
-      <div class="row space"><small class="muted" id="m-len">0 / 640 caractères</small><button class="btn primary">Envoyer</button></div>
+      <div class="cols"><label>${t('Destinataires')}<select class="input" name="dest"><option value="">${t("Toute l'école ({n} familles)",{n:DB.students.length})}</option>${CLASSES.map(c => `<option value="${c.id}">${t('Parents de {c}',{c:c.id})}</option>`).join('')}</select></label>
+      <label>${t('Canal')}<select class="input" name="canal"><option>WhatsApp</option><option>SMS</option><option>WhatsApp + SMS</option></select></label></div>
+      <label>${t('Modèle')}<select class="input" id="m-tpl"><option value="">${t('— Choisir un modèle —')}</option>${Object.keys(MODELES).map(k => `<option value="${esc(k)}">${t(k)}</option>`).join('')}</select></label>
+      <label>${t('Message')}<textarea class="input" name="texte" id="m-texte" required maxlength="640" placeholder="${t('Écrivez votre message…')}"></textarea></label>
+      <div class="row space"><small class="muted" id="m-len"></small><button class="btn primary">${t('Envoyer')}</button></div>
     </form>
   </div>
-  <div class="card"><h3>Historique des envois</h3>
-    ${DB.messages.map(m => `<div class="list-item" style="align-items:flex-start"><div><div class="row"><b>${esc(m.dest)}</b>${m.auto?'<span class="badge b-grey">Automatique</span>':''}${m.type?`<span class="badge b-warn">${m.type}</span>`:''}</div><small class="muted">${fdate(m.date)} · ${m.canal} · ${m.nb} destinataire(s)</small><p style="margin:4px 0 0;font-size:13.5px">${esc(m.texte)}</p></div></div>`).join('')}
+  <div class="card"><h3>${t('Historique des envois')}</h3>
+    ${DB.messages.map(m => `<div class="list-item" style="align-items:flex-start"><div><div class="row"><b>${esc(destLabel(m))}</b>${m.auto?`<span class="badge b-grey">${t('Automatique')}</span>`:''}${m.type?`<span class="badge b-warn">${t(m.type)}</span>`:''}</div><small class="muted">${t('{d} · {c} · {n} destinataire(s)',{d:fdate(m.date),c:m.canal,n:m.nb})}</small><p style="margin:4px 0 0;font-size:13.5px">${esc(msgText(m))}</p></div></div>`).join('')}
   </div></div>`;
-  const len = () => $('#m-len').textContent = `${$('#m-texte').value.length} / 640 caractères`;
-  $('#m-texte').oninput = len;
-  $('#m-tpl').onchange = e => { if(e.target.value){ $('#m-texte').value = MODELES[e.target.value]; len(); } };
+  const len = () => $('#m-len').textContent = t('{n} / 640 caractères',{n:$('#m-texte').value.length});
+  $('#m-texte').oninput = len; len();
+  $('#m-tpl').onchange = e => { if(e.target.value){ $('#m-texte').value = t(MODELES[e.target.value]); len(); } };
   $('#f-msg').onsubmit = e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
     const nb = d.dest ? DB.students.filter(s => s.classe === d.dest).length : DB.students.length;
-    DB.messages.unshift({date:todayISO(), canal:d.canal, dest:d.dest ? `Parents de ${d.dest}` : 'Toute l\'école', nb, texte:d.texte, auto:false});
-    save(); toast(`Annonce envoyée à ${nb} familles par ${d.canal} (simulation)`); viewMessages(); };
+    DB.messages.unshift({date:todayISO(), canal:d.canal, scope:d.dest ? 'class' : 'all', cls:d.dest || undefined, nb, texte:d.texte, auto:false});
+    save(); toast(t('Annonce envoyée à {n} familles par {c} (simulation)',{n:nb,c:d.canal})); viewMessages(); };
 }
 
 /* ============ Espace parent ============ */
 let parentChild = null;
 function viewParent(){
-  setHeader('Espace parent', 'Aperçu de l\'application mobile utilisée par les parents', '');
+  setHeader(t('Espace parent'), t("Aperçu de l'application mobile utilisée par les parents"), '');
   if(!parentChild){ const late = DB.students.find(s => finance(s).retard > 0); parentChild = (late || DB.students[0]).id; }
   const s = studentById(parentChild), f = finance(s), c = classOf(s.classe), g = DB.grades[s.id] || {}, m = average(s.id);
-  const rk = ranking(s.classe).find(x => x.s.id === s.id);
+  const rk = ranking(s.classe), me = rk.find(x => x.s.id === s.id);
   const abs = DB.absences.filter(a => a.studentId === s.id).sort((a,b) => b.date.localeCompare(a.date));
-  const ann = DB.messages.filter(x => !x.type && (x.dest === 'Toute l\'école' || x.dest === `Parents de ${s.classe}` || x.dest === s.classe)).slice(0,2);
+  const ann = DB.messages.filter(x => !x.type && (x.scope === 'all' || (x.scope === 'class' && x.cls === s.classe))).slice(0,2);
   $('#view').innerHTML = `<div class="parent-layout">
   <div class="phone"><div class="screen">
-    <div class="p-head"><small>Bonjour,</small><div style="font-weight:700;font-size:17px">${esc(s.parent)}</div>
-      <select id="p-child" aria-label="Choisir l'enfant">${DB.students.slice(0,60).map(x => `<option value="${x.id}" ${x.id===s.id?'selected':''}>${esc(fullName(x))} – ${x.classe}</option>`).join('')}</select></div>
+    <div class="p-head"><small>${t('Bonjour,')}</small><div style="font-weight:700;font-size:17px">${esc(s.parent)}</div>
+      <select id="p-child" aria-label="${t("Choisir l'enfant")}">${DB.students.slice(0,60).map(x => `<option value="${x.id}" ${x.id===s.id?'selected':''}>${esc(fullName(x))} – ${x.classe}</option>`).join('')}</select></div>
     <div class="p-body">
-      <div class="p-card"><h5>Scolarité</h5>
-        ${f.retard ? `<div class="p-amount" style="color:var(--red)">${fcfa(f.du)}</div><div class="muted" style="font-size:13px;margin-bottom:10px">à payer : ${MOIS.slice(f.paid, MOIS_DUS).join(', ')}</div>
-          <div class="chips"><button class="btn wave" data-act="pay-mobile" data-mode="Wave" style="flex:1">Payer avec Wave</button><button class="btn om" data-act="pay-mobile" data-mode="Orange Money" style="flex:1">Orange Money</button></div>`
-        : `<div class="p-amount" style="color:var(--green)">À jour ✓</div><div class="muted" style="font-size:13px;margin-bottom:10px">${f.paid} mois payés sur ${MOIS.length}${f.prochain!=null?' · prochain : '+MOIS[f.prochain]+' ('+fcfa(c.mens)+')':''}</div>
-          ${f.prochain!=null?`<button class="btn wave" data-act="pay-mobile" data-mode="Wave" style="width:100%">Payer ${MOIS[f.prochain]} en avance</button>`:''}`}
+      <div class="p-card"><h5>${t('Scolarité')}</h5>
+        ${f.retard ? `<div class="p-amount" style="color:var(--red)">${fcfa(f.du)}</div><div class="muted" style="font-size:13px;margin-bottom:10px">${t('à payer : {m}',{m:moisList(rangeIdx(f.paid, MOIS_DUS))})}</div>
+          <div class="chips"><button class="btn wave" data-act="pay-mobile" data-mode="Wave" style="flex:1">${t('Payer avec Wave')}</button><button class="btn om" data-act="pay-mobile" data-mode="Orange Money" style="flex:1">${t('Orange Money')}</button></div>`
+        : `<div class="p-amount" style="color:var(--green)">${t('À jour ✓')}</div><div class="muted" style="font-size:13px;margin-bottom:10px">${f.prochain!=null ? t('{n} mois payés sur {t} · prochain : {m} ({a})',{n:f.paid,t:NB_MOIS,m:mois(f.prochain),a:fcfa(c.mens)}) : t('{n} mois payés sur {t}',{n:f.paid,t:NB_MOIS})}</div>
+          ${f.prochain!=null?`<button class="btn wave" data-act="pay-mobile" data-mode="Wave" style="width:100%">${t('Payer {m} en avance',{m:mois(f.prochain)})}</button>`:''}`}
       </div>
-      <div class="p-card"><h5>Résultats · 1er trimestre</h5>
-        <div class="row space"><div><span class="p-amount">${m!=null?m.toFixed(2):'—'}</span><span class="muted"> / 20</span></div>${rk?`<span class="badge b-info">${rankLabel(rk.rang)} sur ${ranking(s.classe).length}</span>`:''}</div>
-        ${subjects(s.classe).slice(0,4).map(([mat]) => `<div class="list-item" style="padding:6px 0;font-size:13.5px"><span>${esc(mat)}</span><b>${g[mat]!=null?g[mat]:'—'}</b></div>`).join('')}
-        <button class="btn sm" style="width:100%;margin-top:8px" data-act="bulletin" data-id="${s.id}">Voir le bulletin complet</button>
+      <div class="p-card"><h5>${t('Résultats · 1er trimestre')}</h5>
+        <div class="row space"><div><span class="p-amount">${m!=null?m.toFixed(2):'—'}</span><span class="muted"> / 20</span></div>${me?`<span class="badge b-info">${t('{r} sur {n}',{r:rankLabel(me.rang),n:rk.length})}</span>`:''}</div>
+        ${subjects(s.classe).slice(0,4).map(([mat]) => `<div class="list-item" style="padding:6px 0;font-size:13.5px"><span>${esc(t(mat))}</span><b>${g[mat]!=null?g[mat]:'—'}</b></div>`).join('')}
+        <button class="btn sm" style="width:100%;margin-top:8px" data-act="bulletin" data-id="${s.id}">${t('Voir le bulletin complet')}</button>
       </div>
-      <div class="p-card"><h5>Absences & retards</h5>
-        ${abs.length ? abs.slice(0,3).map(a => `<div class="list-item" style="padding:6px 0;font-size:13.5px"><span>${fdate(a.date)}</span><span class="badge ${a.type==='Absence'?'b-bad':'b-warn'}">${a.type}</span></div>`).join('') : '<span class="muted" style="font-size:13.5px">Aucune absence ce trimestre 👏</span>'}
+      <div class="p-card"><h5>${t('Absences & retards')}</h5>
+        ${abs.length ? abs.slice(0,3).map(a => `<div class="list-item" style="padding:6px 0;font-size:13.5px"><span>${fdate(a.date)}</span><span class="badge ${a.type==='Absence'?'b-bad':'b-warn'}">${t(a.type)}</span></div>`).join('') : `<span class="muted" style="font-size:13.5px">${t('Aucune absence ce trimestre 👏')}</span>`}
       </div>
-      <div class="p-card"><h5>Annonces de l'école</h5>
-        ${ann.length ? ann.map(a => `<p style="margin:0 0 8px;font-size:13.5px"><small class="muted">${fdate(a.date)}</small><br>${esc(a.texte)}</p>`).join('') : '<span class="muted" style="font-size:13.5px">Aucune annonce.</span>'}
+      <div class="p-card"><h5>${t("Annonces de l'école")}</h5>
+        ${ann.length ? ann.map(a => `<p style="margin:0 0 8px;font-size:13.5px"><small class="muted">${fdate(a.date)}</small><br>${esc(msgText(a))}</p>`).join('') : `<span class="muted" style="font-size:13.5px">${t('Aucune annonce.')}</span>`}
       </div>
     </div>
   </div></div>
-  <div class="card"><h3>Ce que voit le parent</h3>
+  <div class="card"><h3>${t('Ce que voit le parent')}</h3>
     <ul class="feature-list">
-      <li><b>Situation de la scolarité</b> en temps réel, avec les mois restant dus.</li>
-      <li><b>Paiement en un clic</b> par Wave, Orange Money ou Free Money ; le reçu arrive sur WhatsApp et l'école le voit immédiatement.</li>
-      <li><b>Notes, moyenne, rang</b> et bulletin téléchargeable en PDF.</li>
-      <li><b>Alerte immédiate</b> en cas d'absence ou de retard.</li>
-      <li><b>Annonces de l'école</b> : réunions, congés, sorties.</li>
+      <li>${t('<b>Situation de la scolarité</b> en temps réel, avec les mois restant dus.')}</li>
+      <li>${t("<b>Paiement en un clic</b> par Wave, Orange Money ou Free Money ; le reçu arrive sur WhatsApp et l'école le voit immédiatement.")}</li>
+      <li>${t('<b>Notes, moyenne, rang</b> et bulletin téléchargeable en PDF.')}</li>
+      <li>${t("<b>Alerte immédiate</b> en cas d'absence ou de retard.")}</li>
+      <li>${t("<b>Annonces de l'école</b> : réunions, congés, sorties.")}</li>
     </ul>
-    <p class="muted" style="font-size:14px">Dans la version finale, cet espace sera une application installable (PWA) qui fonctionne sur les téléphones d'entrée de gamme, avec une version en wolof et des notifications WhatsApp pour les parents qui n'installent pas l'application.</p>
-    <p class="muted" style="font-size:14px">Essayez : choisissez un enfant en retard de paiement, puis cliquez sur « Payer avec Wave ». Le paiement apparaît ensuite dans le tableau de bord de l'école.</p>
+    <p class="muted" style="font-size:14px">${t("Dans la version finale, cet espace sera une application installable (PWA) qui fonctionne sur les téléphones d'entrée de gamme, avec une version en wolof et des notifications WhatsApp pour les parents qui n'installent pas l'application.")}</p>
+    <p class="muted" style="font-size:14px">${t("Essayez : choisissez un enfant en retard de paiement, puis cliquez sur « Payer avec Wave ». Le paiement apparaît ensuite dans le tableau de bord de l'école.")}</p>
   </div></div>`;
   $('#p-child').onchange = e => { parentChild = +e.target.value; viewParent(); };
 }
 function payMobile(mode){
   const s = studentById(parentChild), f = finance(s), n = Math.max(1, f.retard), amount = n * f.mens;
-  openModal(`<h2>Paiement ${mode}</h2><p class="muted" style="margin:0 0 14px">Scolarité de ${esc(fullName(s))} · ${MOIS.slice(f.paid, f.paid+n).join(', ')}</p>
-    <div class="card" style="text-align:center"><div class="muted">Montant</div><div class="p-amount" style="font-size:30px">${fcfa(amount)}</div><div class="muted" style="font-size:13px">Bénéficiaire : ${SCHOOL.nom}</div></div>
-    <form class="form" id="f-mob" style="margin-top:14px"><label>Numéro ${mode}<input class="input" value="${esc(s.tel)}" inputmode="tel" required></label>
-    <div class="actions"><button type="button" class="btn" data-act="close">Annuler</button><button class="btn ${mode==='Wave'?'wave':'om'}" id="mob-ok">Confirmer le paiement</button></div></form>`);
-  $('#f-mob').onsubmit = e => { e.preventDefault(); const b = $('#mob-ok'); b.disabled = true; b.textContent = 'Validez sur votre téléphone…';
-    setTimeout(() => { const p = recordPayment(s, n, mode); showReceipt(p, `Paiement ${mode} reçu : ${fcfa(amount)} (simulation)`); }, 1400); };
+  openModal(`<h2>${t('Paiement {m}',{m:mode})}</h2><p class="muted" style="margin:0 0 14px">${esc(t('Scolarité de {n} · {m}',{n:fullName(s),m:moisList(rangeIdx(f.paid, f.paid+n))}))}</p>
+    <div class="card" style="text-align:center"><div class="muted">${t('Montant')}</div><div class="p-amount" style="font-size:30px">${fcfa(amount)}</div><div class="muted" style="font-size:13px">${t('Bénéficiaire : {e}',{e:SCHOOL.nom})}</div></div>
+    <form class="form" id="f-mob" style="margin-top:14px"><label>${t('Numéro {m}',{m:mode})}<input class="input" value="${esc(s.tel)}" inputmode="tel" required></label>
+    <div class="actions"><button type="button" class="btn" data-act="close">${t('Annuler')}</button><button class="btn ${mode==='Wave'?'wave':'om'}" id="mob-ok">${t('Confirmer le paiement')}</button></div></form>`);
+  $('#f-mob').onsubmit = e => { e.preventDefault(); const b = $('#mob-ok'); b.disabled = true; b.textContent = t('Validez sur votre téléphone…');
+    setTimeout(() => { const p = recordPayment(s, n, mode); showReceipt(p, t('Paiement {m} reçu : {a} (simulation)',{m:mode,a:fcfa(amount)})); }, 1400); };
 }
 
 /* ============ Actions globales ============ */
@@ -929,32 +1109,33 @@ document.addEventListener('click', e => {
   const id = el.dataset.id;
   switch(el.dataset.act){
     case 'close': closeModal(); break;
+    case 'print': window.print(); break;
     case 'fiche': openFiche(id); break;
     case 'inscrire': openInscription(); break;
     case 'encaisser': openEncaisser(id ? +id : null); break;
     case 'relancer': openRelance(id); break;
     case 'relancer-tous': relancerTous(el.dataset.classe || ''); break;
-    case 'recu': openModal(`<h2>Reçu de paiement</h2>${receiptHTML(DB.payments.find(p => p.id === +id))}<div class="actions"><button class="btn" onclick="window.print()">🖨️ Imprimer</button><button class="btn primary" data-act="close">Fermer</button></div>`); break;
+    case 'recu': openModal(`<h2>${t('Reçu de paiement')}</h2>${receiptHTML(DB.payments.find(p => p.id === +id))}<div class="actions"><button class="btn" data-act="print">🖨️ ${t('Imprimer')}</button><button class="btn primary" data-act="close">${t('Fermer')}</button></div>`); break;
     case 'bulletin': openBulletin(id); break;
-    case 'wa-recu': { const s = studentById(DB.payments.find(p => p.id === +id).studentId); toast(`Reçu envoyé par WhatsApp à ${s.parent} (simulation)`); break; }
-    case 'wa-bulletin': { const s = studentById(id); toast(`Bulletin PDF envoyé par WhatsApp à ${s.parent} (simulation)`); break; }
+    case 'wa-recu': { const s = studentById(DB.payments.find(p => p.id === +id).studentId); toast(t('Reçu envoyé par WhatsApp à {p} (simulation)',{p:s.parent})); break; }
+    case 'wa-bulletin': { const s = studentById(id); toast(t('Bulletin PDF envoyé par WhatsApp à {p} (simulation)',{p:s.parent})); break; }
     case 'pay-mobile': payMobile(el.dataset.mode); break;
   }
 });
 document.addEventListener('keydown', e => { if(e.key === 'Enter' && e.target.matches('tr[data-act]')) e.target.click(); });
-$('#reset').onclick = () => { if(confirm('Effacer vos modifications et recharger les données de démonstration ?')){ localStorage.removeItem(STORE); load(); parentChild = null; route(); toast('Démo réinitialisée'); } };
+$('#reset').onclick = () => { if(confirm(t('Effacer vos modifications et recharger les données de démonstration ?'))){ localStorage.removeItem(STORE); load(); parentChild = null; route(); toast(t('Démo réinitialisée')); } };
 
 /* ============ Mode clair / sombre ============ */
 const SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
 const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
-function applyTheme(t){
-  document.documentElement.dataset.theme = t;
-  try{ localStorage.setItem('jang-theme', t); }catch(e){}
-  document.querySelectorAll('.theme-toggle').forEach(b => { b.innerHTML = t === 'dark' ? SUN : MOON; b.setAttribute('aria-label', t === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'); b.title = b.getAttribute('aria-label'); });
-  document.querySelector('meta[name=theme-color]').content = t === 'dark' ? '#101215' : '#0B3B2E';
+function applyTheme(th){
+  document.documentElement.dataset.theme = th;
+  try{ localStorage.setItem('jang-theme', th); }catch(e){}
+  const label = th === 'dark' ? t('Passer en mode clair') : t('Passer en mode sombre');
+  document.querySelectorAll('.theme-toggle').forEach(b => { b.innerHTML = th === 'dark' ? SUN : MOON; b.setAttribute('aria-label', label); b.title = label; });
+  document.querySelector('meta[name=theme-color]').content = th === 'dark' ? '#101215' : '#0B3B2E';
 }
 document.querySelectorAll('.theme-toggle').forEach(b => b.onclick = () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
-applyTheme(document.documentElement.dataset.theme || 'light');
 
 /* ============ Connexion ============ */
 const ROLES = {
@@ -963,24 +1144,28 @@ const ROLES = {
   enseignant:  {label:'Enseignant',  ident:'m.sarr@lesbaobabs.sn',      idLabel:'E-mail ou identifiant', page:'notes'},
   parent:      {label:'Parent',      ident:'77 123 45 67',              idLabel:'Numéro de téléphone',   page:'parent'},
 };
-let loginRole = 'direction';
+let loginRole = 'direction', sessionRole = null;
 const loginEl = $('#login'), lampBtn = $('#lamp');
-function setLamp(on){ loginEl.classList.toggle('on', on); lampBtn.setAttribute('aria-pressed', on); lampBtn.setAttribute('aria-label', on ? 'Éteindre la lampe' : 'Allumer la lampe'); }
+function setLamp(on){ loginEl.classList.toggle('on', on); lampBtn.setAttribute('aria-pressed', on); lampBtn.setAttribute('aria-label', t(on ? 'Éteindre la lampe' : 'Allumer la lampe')); }
 lampBtn.onclick = () => { lampBtn.classList.add('pull'); setTimeout(() => lampBtn.classList.remove('pull'), 250); setLamp(!loginEl.classList.contains('on')); };
 ['#l-id','#l-pw'].forEach(sel => $(sel).addEventListener('focus', () => setLamp(true)));
-$('#f-login .roles').onclick = e => { const b = e.target.closest('button'); if(!b) return;
-  loginRole = b.dataset.role;
-  document.querySelectorAll('#f-login .roles button').forEach(x => { x.classList.toggle('active', x === b); x.setAttribute('aria-checked', x === b); });
-  const r = ROLES[loginRole]; $('#id-label').textContent = r.idLabel; $('#l-id').value = r.ident;
-  $('#l-id').inputMode = loginRole === 'parent' ? 'tel' : 'email'; $('.ctrl .lead').textContent = loginRole === 'parent' ? '📞' : '👤'; setLamp(true); };
-$('#eye').onclick = () => { const i = $('#l-pw'), show = i.type === 'password'; i.type = show ? 'text' : 'password'; $('#eye').setAttribute('aria-label', show ? 'Masquer le mot de passe' : 'Afficher le mot de passe'); $('#eye').textContent = show ? '🙈' : '👁️'; };
-$('#forgot').onclick = e => { e.preventDefault(); toast('Un lien de réinitialisation a été envoyé (simulation)'); };
+function setRole(role, fillIdent){
+  loginRole = role;
+  document.querySelectorAll('#f-login .roles button').forEach(x => { const on = x.dataset.role === role; x.classList.toggle('active', on); x.setAttribute('aria-checked', on); });
+  const r = ROLES[role]; $('#id-label').textContent = t(r.idLabel);
+  if(fillIdent) $('#l-id').value = r.ident;
+  $('#l-id').inputMode = role === 'parent' ? 'tel' : 'email'; $('.ctrl .lead').textContent = role === 'parent' ? '📞' : '👤';
+}
+$('#f-login .roles').onclick = e => { const b = e.target.closest('button'); if(!b) return; setRole(b.dataset.role, true); setLamp(true); };
+function eyeLabel(){ const shown = $('#l-pw').type === 'text'; $('#eye').setAttribute('aria-label', t(shown ? 'Masquer le mot de passe' : 'Afficher le mot de passe')); $('#eye').textContent = shown ? '🙈' : '👁️'; }
+$('#eye').onclick = () => { const i = $('#l-pw'); i.type = i.type === 'password' ? 'text' : 'password'; eyeLabel(); };
+$('#forgot').onclick = e => { e.preventDefault(); toast(t('Un lien de réinitialisation a été envoyé (simulation)')); };
 document.querySelectorAll('[data-alt]').forEach(b => b.onclick = () => {
-  if(b.dataset.alt === 'SMS'){ toast('Code à 6 chiffres envoyé par SMS (simulation)'); setTimeout(() => doLogin(), 900); }
+  if(b.dataset.alt === 'SMS'){ toast(t('Code à 6 chiffres envoyé par SMS (simulation)')); setTimeout(() => doLogin(), 900); }
   else doLogin(); });
 $('#f-login').onsubmit = e => { e.preventDefault();
-  if(!$('#l-id').value.trim()){ $('#l-id').focus(); toast(loginRole === 'parent' ? 'Entrez votre numéro de téléphone' : 'Entrez votre identifiant'); return; }
-  if(!$('#l-pw').value){ $('#l-pw').focus(); toast('Entrez votre mot de passe'); return; }
+  if(!$('#l-id').value.trim()){ $('#l-id').focus(); toast(t(loginRole === 'parent' ? 'Entrez votre numéro de téléphone' : 'Entrez votre identifiant')); return; }
+  if(!$('#l-pw').value){ $('#l-pw').focus(); toast(t('Entrez votre mot de passe')); return; }
   doLogin(); };
 function showLogin(show){
   loginEl.classList.toggle('gone', !show);
@@ -988,20 +1173,41 @@ function showLogin(show){
   document.body.style.overflow = show ? 'hidden' : '';
   if(show) setLamp(false);
 }
+const updateRoleLabel = () => { $('#role-label').textContent = sessionRole ? t(ROLES[sessionRole].label) : t('Gestion scolaire'); };
 function doLogin(){
   setLamp(true);
+  sessionRole = loginRole;
   try{ sessionStorage.setItem('jang-session', loginRole); }catch(e){}
-  $('#role-label').textContent = ROLES[loginRole].label;
-  setTimeout(() => { location.hash = ROLES[loginRole].page; route(); showLogin(false); toast(`Connecté en tant que ${ROLES[loginRole].label}`); }, 350);
+  updateRoleLabel();
+  setTimeout(() => { location.hash = ROLES[loginRole].page; route(); showLogin(false); toast(t('Connecté en tant que {r}',{r:t(ROLES[loginRole].label)})); }, 350);
 }
-$('#logout').onclick = () => { try{ sessionStorage.removeItem('jang-session'); }catch(e){} showLogin(true); };
-(function(){ let r = null; try{ r = sessionStorage.getItem('jang-session'); }catch(e){}
-  if(r && ROLES[r]){ loginRole = r; $('#role-label').textContent = ROLES[r].label; loginEl.style.transition = 'none'; showLogin(false); setTimeout(() => loginEl.style.transition = '', 50); }
-  else showLogin(true); })();
+$('#logout').onclick = () => { try{ sessionStorage.removeItem('jang-session'); }catch(e){} sessionRole = null; updateRoleLabel(); showLogin(true); };
 
-load(); renderNav();
+/* ============ Changement de langue ============ */
+function applyLang(lang){
+  LANG = lang;
+  try{ localStorage.setItem('jang-lang', lang); }catch(e){}
+  document.documentElement.lang = lang;
+  document.title = t("Jàng – Gestion d'école privée (démo)");
+  document.querySelectorAll('[data-i]').forEach(el => el.textContent = t(el.dataset.i));
+  document.querySelectorAll('[data-i-ph]').forEach(el => el.placeholder = t(el.dataset.iPh));
+  document.querySelectorAll('[data-i-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.iAria)); if(el.id === 'logout') el.title = t(el.dataset.iAria); });
+  const other = lang === 'en' ? 'fr' : 'en', lbl = lang === 'en' ? 'Passer en français' : 'Switch to English';
+  document.querySelectorAll('.lang-btn').forEach(b => { b.textContent = other.toUpperCase(); b.setAttribute('aria-label', lbl); b.title = lbl; b.lang = other; });
+  applyTheme(document.documentElement.dataset.theme || 'light');
+  setRole(loginRole, false); setLamp(loginEl.classList.contains('on')); eyeLabel(); updateRoleLabel();
+  if(!$('#modal').hidden) closeModal();
+  renderNav(); route();
+}
+document.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => applyLang(LANG === 'en' ? 'fr' : 'en'));
+
+/* ============ Démarrage ============ */
+load();
+(function(){ let r = null; try{ r = sessionStorage.getItem('jang-session'); }catch(e){}
+  if(r && ROLES[r]){ loginRole = r; sessionRole = r; setRole(r, true); loginEl.style.transition = 'none'; showLogin(false); setTimeout(() => loginEl.style.transition = '', 50); }
+  else showLogin(true); })();
+applyLang(LANG);
 window.addEventListener('hashchange', route);
-route();
 </script>
 </body>
 </html>
